@@ -28,18 +28,18 @@ export async function GET(req: Request) {
     },
   })
 
-  let articleIds = require
-    .context('../articles', true, /\/page\.mdx$/)
+  let sopIds = require
+    .context('../sops', true, /\/page\.mdx$/)
     .keys()
     .filter((key) => key.startsWith('./'))
     .map((key) => key.slice(2).replace(/\/page\.mdx$/, ''))
 
-  for (let id of articleIds) {
-    let url = String(new URL(`/articles/${id}`, req.url))
+  for (let id of sopIds) {
+    let url = String(new URL(`/sops/${id}`, req.url))
     let html = await (await fetch(url)).text()
     let $ = cheerio.load(html)
 
-    let publicUrl = `${siteUrl}/articles/${id}`
+    let publicUrl = `${siteUrl}/sops/${id}`
     let article = $('article').first()
     let title = article.find('h1').first().text()
     let date = article.find('time').first().attr('datetime')

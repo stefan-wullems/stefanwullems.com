@@ -1,0 +1,2 @@
+- Use a csv parsing library rather than reinventing the wheel.
+- At least format the sop similar to articles
