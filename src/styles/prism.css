@@ -27,7 +27,7 @@ pre[class*='language-'] {
 .token.class,
 .token.string,
 .token.property {
-  color: var(--color-teal-300);
+  color: var(--color-amber-300);
 }
 
 .token.punctuation,
@@ -37,7 +37,7 @@ pre[class*='language-'] {
 
 .token.unit,
 .language-css .token.function {
-  color: var(--color-sky-200);
+  color: var(--color-amber-200);
 }
 
 .token.comment,

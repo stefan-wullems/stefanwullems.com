@@ -27,9 +27,9 @@ function SocialLink({
     <li className={clsx(className, 'flex')}>
       <Link
         href={href}
-        className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
+        className="group flex text-sm font-medium text-zinc-800 transition hover:text-amber-500 dark:text-zinc-200 dark:hover:text-amber-500"
       >
-        <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-teal-500" />
+        <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-amber-500" />
         <span className="ml-4">{children}</span>
       </Link>
     </li>
@@ -49,8 +49,7 @@ function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 export const metadata: Metadata = {
   title: 'About',
-  description:
-    'I’m Spencer Sharp. I live in New York City, where I design the future.',
+  description: 'I’m Stefan Wullems. Digital marketer for everything Web.',
 }
 
 export default function About() {
@@ -69,58 +68,55 @@ export default function About() {
         </div>
         <div className="lg:order-first lg:row-span-2">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
-            I’m Spencer Sharp. I live in New York City, where I design the
-            future.
+            I’m Stefan Wullems. Digital marketer for everything Web.
           </h1>
           <div className="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-400">
             <p>
-              I’ve loved making things for as long as I can remember, and wrote
-              my first program when I was 6 years old, just two weeks after my
-              mom brought home the brand new Macintosh LC 550 that I taught
-              myself to type on.
+              I started programming at 18 when my cousin and I finally started
+              working on the game we had been imagining for months. He did
+              design and art, and I had to learn how to code. Brimming with
+              confidence from making a sphere move in certain ways, I started
+              applying for software jobs when a kind recruiter referred me to a
+              web development bootcamp. Ten weeks of hard and exciting work
+              launched me into a career that led me to work all across Europe
+              for companies ranging from small startups to rapidly growing
+              unicorns.
             </p>
             <p>
-              The only thing I loved more than computers as a kid was space.
-              When I was 8, I climbed the 40-foot oak tree at the back of our
-              yard while wearing my older sister’s motorcycle helmet, counted
-              down from three, and jumped — hoping the tree was tall enough that
-              with just a bit of momentum I’d be able to get to orbit.
+              In just a couple of years I found myself in places I couldn't have
+              imagined at the outset, but couldn't help feeling like I had lost
+              something along the way. I wanted a reset, to explore those things
+              I had written off as "not in this lifetime". I stepped outside of
+              tech, launched a tiny coaching practice and started going to
+              university to study Psychology in the evenings.
             </p>
             <p>
-              I spent the next few summers indoors working on a rocket design,
-              while I recovered from the multiple surgeries it took to fix my
-              badly broken legs. It took nine iterations, but when I was 15 I
-              sent my dad’s Blackberry into orbit and was able to transmit a
-              photo back down to our family computer from space.
-            </p>
-            <p>
-              Today, I’m the founder of Planetaria, where we’re working on
-              civilian space suits and manned shuttle kits you can assemble at
-              home so that the next generation of kids really <em>can</em> make
-              it to orbit — from the comfort of their own backyards.
+              Today, I am at the start of a career change towards digital
+              marketing. This field has it all. It allows me to do everything I
+              love: analyze, learn, write code, strategize, and at the same
+              time: understand and connect to people. It captivates with game
+              changing trends like AI that are reshaping the field and it has
+              lots of deep, interesting and stackable skills to master. I may be
+              back at the bottom of the mountain, but I found the right mountain
+              allright.
             </p>
           </div>
         </div>
         <div className="lg:pl-20">
           <ul role="list">
-            <SocialLink href="#" icon={XIcon}>
-              Follow on X
-            </SocialLink>
-            <SocialLink href="#" icon={InstagramIcon} className="mt-4">
-              Follow on Instagram
-            </SocialLink>
-            <SocialLink href="#" icon={GitHubIcon} className="mt-4">
-              Follow on GitHub
-            </SocialLink>
-            <SocialLink href="#" icon={LinkedInIcon} className="mt-4">
+            <SocialLink
+              href="https://www.linkedin.com/in/stefanwullems/"
+              icon={LinkedInIcon}
+              className="mt-4"
+            >
               Follow on LinkedIn
             </SocialLink>
             <SocialLink
-              href="mailto:spencer@planetaria.tech"
+              href="mailto:stefanwullems1998@gmail.com"
               icon={MailIcon}
               className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
             >
-              spencer@planetaria.tech
+              stefanwullems1998@gmail.com
             </SocialLink>
           </ul>
         </div>
