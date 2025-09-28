@@ -1,16 +1,21 @@
-export interface AhrefsPageData {
-  url: string
-  pageTitle: string
-  referringDomains: number
-  organicTraffic: number
-  publishDate?: string
-}
+// Boundary layer for Ahrefs page data - handles parsing, validation, and side effects
 
-export interface AhrefsRawRow {
-  URL: string
-  Title: string
-  'Referring domains': number
-  Traffic: number
+import {
+  AhrefsPageData,
+  AhrefsRawRow,
+  fromRawRow,
+  fromRawRows,
+  withPublishDate,
+} from '../domain/ahrefs-page'
+
+// Progress tracking interface for published date enrichment
+export interface PublishedDateProgress {
+  completed: number
+  total: number
+  currentUrl: string
+  rate: number // URLs per second
+  estimatedTimeRemaining: number // seconds
+  elapsedTime: number // seconds
 }
 
 // Mapping from Ahrefs column names to internal camelCase names
@@ -66,66 +71,8 @@ function parseCsvLine(line: string): string[] {
   return result.map((field) => field.trim())
 }
 
-export class AhrefsPage {
-  constructor(
-    public url: string,
-    public pageTitle: string,
-    public referringDomains: number,
-    public organicTraffic: number,
-    public publishDate?: string,
-  ) {}
-
-  static fromCsvRow(row: Record<string, any>): AhrefsPage {
-    const url = row['URL'] || row['url'] || ''
-    const pageTitle = row['Title'] || row['pageTitle'] || row['title'] || ''
-    const referringDomainsStr =
-      row['Referring domains'] || row['referringDomains'] || '0'
-    const organicTrafficStr =
-      row['Traffic'] || row['organicTraffic'] || row['traffic'] || '0'
-
-    // Handle empty strings and non-numeric values
-    const referringDomains =
-      referringDomainsStr === '' ? 0 : parseInt(referringDomainsStr) || 0
-    const organicTraffic =
-      organicTrafficStr === '' ? 0 : parseInt(organicTrafficStr) || 0
-
-    const publishDate = row['publishDate'] || row['publish_date'] || undefined
-
-    return new AhrefsPage(
-      url,
-      pageTitle,
-      referringDomains,
-      organicTraffic,
-      publishDate,
-    )
-  }
-
-  static fromCsvData(csvData: Record<string, any>[]): AhrefsPage[] {
-    return csvData.map((row) => AhrefsPage.fromCsvRow(row))
-  }
-
-  toData(): AhrefsPageData {
-    return {
-      url: this.url,
-      pageTitle: this.pageTitle,
-      referringDomains: this.referringDomains,
-      organicTraffic: this.organicTraffic,
-      publishDate: this.publishDate,
-    }
-  }
-
-  withPublishDate(publishDate: string): AhrefsPage {
-    return new AhrefsPage(
-      this.url,
-      this.pageTitle,
-      this.referringDomains,
-      this.organicTraffic,
-      publishDate,
-    )
-  }
-}
-
-export function parseCsvContent(csvContent: string): AhrefsPage[] {
+// Boundary function - parses CSV content and validates structure
+export function parseCsvContent(csvContent: string): AhrefsPageData[] {
   // Handle different line endings and filter empty lines
   const lines = csvContent.split(/\r\n|\r|\n/).filter((line) => line.trim())
   if (lines.length < 2) {
@@ -185,22 +132,58 @@ export function parseCsvContent(csvContent: string): AhrefsPage[] {
     )
   }
 
-  return AhrefsPage.fromCsvData(rows)
+  return fromRawRows(rows)
 }
 
+// Boundary function - handles side effects and external API calls
 export async function enrichWithPublishedDates(
-  pages: AhrefsPage[],
+  pages: AhrefsPageData[],
   cache?: Map<string, string>,
   delay: number = 500,
-): Promise<AhrefsPage[]> {
-  const enrichedPages: AhrefsPage[] = []
+  onProgress?: (progress: PublishedDateProgress) => void,
+): Promise<AhrefsPageData[]> {
+  const enrichedPages: AhrefsPageData[] = []
   const cacheMap = cache || new Map<string, string>()
+  const startTime = Date.now()
+  let completed = 0
 
-  for (const page of pages) {
+  // Report initial progress
+  if (onProgress) {
+    onProgress({
+      completed: 0,
+      total: pages.length,
+      currentUrl: pages[0]?.url || 'Starting...',
+      rate: 0,
+      estimatedTimeRemaining: 0,
+      elapsedTime: 0,
+    })
+  }
+
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i]
+
     // Check cache first
     if (cacheMap.has(page.url)) {
       const cachedDate = cacheMap.get(page.url)
-      enrichedPages.push(page.withPublishDate(cachedDate || ''))
+      enrichedPages.push(withPublishDate(page, cachedDate || ''))
+      completed++
+
+      // Report progress for cached items too
+      if (onProgress) {
+        const elapsedTime = (Date.now() - startTime) / 1000
+        const rate = completed / Math.max(elapsedTime, 0.1) // Avoid very small divisors
+        const remaining = pages.length - completed
+        const estimatedTimeRemaining = remaining > 0 ? remaining / rate : 0
+
+        onProgress({
+          completed,
+          total: pages.length,
+          currentUrl: page.url,
+          rate,
+          estimatedTimeRemaining,
+          elapsedTime,
+        })
+      }
       continue
     }
 
@@ -208,21 +191,56 @@ export async function enrichWithPublishedDates(
     try {
       const publishDate = await findPublishedDate(page.url)
       cacheMap.set(page.url, publishDate)
-      enrichedPages.push(page.withPublishDate(publishDate))
-
-      // Add delay to be respectful
-      if (delay > 0) {
-        await new Promise((resolve) => setTimeout(resolve, delay))
-      }
+      enrichedPages.push(withPublishDate(page, publishDate))
     } catch (error) {
       console.warn(`Failed to find published date for ${page.url}:`, error)
       enrichedPages.push(page)
     }
+
+    completed++
+
+    // Report progress after each URL
+    if (onProgress) {
+      const elapsedTime = (Date.now() - startTime) / 1000 // Convert to seconds
+      const rate = completed / Math.max(elapsedTime, 0.1) // Avoid very small divisors
+      const remaining = pages.length - completed
+      const estimatedTimeRemaining = remaining > 0 ? remaining / rate : 0
+
+      onProgress({
+        completed,
+        total: pages.length,
+        currentUrl: page.url,
+        rate,
+        estimatedTimeRemaining,
+        elapsedTime,
+      })
+    }
+
+    // Add delay between requests (but not after the last one)
+    if (delay > 0 && i < pages.length - 1) {
+      await new Promise((resolve) => setTimeout(resolve, delay))
+    }
+  }
+
+  // Final progress report
+  if (onProgress) {
+    const elapsedTime = (Date.now() - startTime) / 1000
+    const rate = completed / Math.max(elapsedTime, 0.1)
+
+    onProgress({
+      completed: pages.length,
+      total: pages.length,
+      currentUrl: 'Completed',
+      rate,
+      estimatedTimeRemaining: 0,
+      elapsedTime,
+    })
   }
 
   return enrichedPages
 }
 
+// Side effect - external API call simulation
 async function findPublishedDate(url: string): Promise<string> {
   // This is a simplified implementation
   // In a real scenario, you would scrape the page for meta tags, JSON-LD, etc.
@@ -232,4 +250,53 @@ async function findPublishedDate(url: string): Promise<string> {
   const mockDate = new Date()
   mockDate.setDate(mockDate.getDate() - Math.floor(Math.random() * 365))
   return mockDate.toISOString().split('T')[0]
+}
+
+// Re-export domain types and interfaces
+export type { AhrefsPageData, AhrefsRawRow }
+
+// Legacy class wrapper for backward compatibility (to be removed)
+export class AhrefsPage {
+  constructor(
+    public url: string,
+    public pageTitle: string,
+    public referringDomains: number,
+    public organicTraffic: number,
+    public publishDate?: string,
+  ) {}
+
+  static fromCsvRow(row: Record<string, any>): AhrefsPage {
+    const data = fromRawRow(row)
+    return new AhrefsPage(
+      data.url,
+      data.pageTitle,
+      data.referringDomains,
+      data.organicTraffic,
+      data.publishDate,
+    )
+  }
+
+  static fromCsvData(csvData: Record<string, any>[]): AhrefsPage[] {
+    return csvData.map((row) => AhrefsPage.fromCsvRow(row))
+  }
+
+  toData(): AhrefsPageData {
+    return {
+      url: this.url,
+      pageTitle: this.pageTitle,
+      referringDomains: this.referringDomains,
+      organicTraffic: this.organicTraffic,
+      publishDate: this.publishDate,
+    }
+  }
+
+  withPublishDate(publishDate: string): AhrefsPage {
+    return new AhrefsPage(
+      this.url,
+      this.pageTitle,
+      this.referringDomains,
+      this.organicTraffic,
+      publishDate,
+    )
+  }
 }

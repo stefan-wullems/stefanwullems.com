@@ -1,2 +1,3 @@
 - Use a csv parsing library rather than reinventing the wheel.
-- At least format the sop similar to articles
+- I want the fetching of publishing dates to show online progress bar
+- Q4 in content audit is wrong because it also includes infinite

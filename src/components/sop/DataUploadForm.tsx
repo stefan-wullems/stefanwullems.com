@@ -2,10 +2,10 @@
 
 import { useState, useRef, DragEvent } from 'react'
 import { SOPStepContent, SOPStepActions } from './SOPStep'
-import { AhrefsPage, parseCsvContent } from '@/lib/sop/ahrefs-page'
+import { AhrefsPageData, parseCsvContent } from '@/lib/sop/ahrefs-page'
 
 export interface DataUploadFormProps {
-  onComplete: (pages: AhrefsPage[]) => void
+  onComplete: (pages: AhrefsPageData[]) => void
   projectName: string
   isLoading?: boolean
 }
@@ -17,7 +17,7 @@ export function DataUploadForm({
 }: DataUploadFormProps) {
   const [isDragOver, setIsDragOver] = useState(false)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-  const [previewData, setPreviewData] = useState<AhrefsPage[]>([])
+  const [previewData, setPreviewData] = useState<AhrefsPageData[]>([])
   const [error, setError] = useState<string>('')
   const [isProcessing, setIsProcessing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)

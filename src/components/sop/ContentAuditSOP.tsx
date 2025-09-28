@@ -7,7 +7,7 @@ import { DataUploadForm } from './DataUploadForm'
 import { AnalysisConfigForm, AnalysisConfig } from './AnalysisConfigForm'
 import { ResultsTable } from './ResultsTable'
 import { ProgressTracker, SOPStep as ProgressStep } from './ProgressTracker'
-import { AhrefsPage, enrichWithPublishedDates } from '@/lib/sop/ahrefs-page'
+import { AhrefsPageData, enrichWithPublishedDates } from '@/lib/sop/ahrefs-page'
 import { ContentInventory } from '@/lib/sop/content-inventory'
 import { TimeBasedAnalysis } from '@/lib/sop/time-based-analysis'
 
@@ -22,9 +22,9 @@ interface SOPState {
   currentStep: SOPStepId
   completedSteps: Set<SOPStepId>
   projectConfig?: ProjectConfig
-  uploadedPages?: AhrefsPage[]
+  uploadedPages?: AhrefsPageData[]
   analysisConfig?: AnalysisConfig
-  enrichedPages?: AhrefsPage[]
+  enrichedPages?: AhrefsPageData[]
   contentInventory?: ContentInventory
   timeBasedAnalysis?: TimeBasedAnalysis
   errors: Record<SOPStepId, string>
@@ -103,7 +103,7 @@ export function ContentAuditSOP() {
   )
 
   const handleDataUpload = useCallback(
-    async (pages: AhrefsPage[]) => {
+    async (pages: AhrefsPageData[]) => {
       setLoading('data-upload', true)
       clearError('data-upload')
 
@@ -178,10 +178,10 @@ export function ContentAuditSOP() {
       }
 
       // Generate content inventory
-      const contentInventory = ContentInventory.fromAhrefsPages(pages)
+      const contentInventory = ContentInventory.fromPageData(pages)
 
       // Generate time-based analysis
-      const timeBasedAnalysis = TimeBasedAnalysis.fromAhrefsPages(
+      const timeBasedAnalysis = TimeBasedAnalysis.fromPageData(
         pages,
         state.analysisConfig.strategy,
       )

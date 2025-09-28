@@ -1,179 +1,190 @@
-import { ContentAuditSOP } from '@/components/sop/ContentAuditSOP'
+import { ArticleLayout } from '@/components/ArticleLayout'
+import { ContentAuditSOPProvider } from '@/components/sop/ContentAuditSOPContext'
+import {
+    ContentAuditWorkflow,
+    ProjectSetupStepWrapper,
+    DataUploadStepWrapper,
+    AnalysisConfigStepWrapper,
+    RunAnalysisStepWrapper,
+    ResultsStepWrapper,
+    ProgressTrackerWrapper,
+} from '@/components/sop/ContentAuditWorkflow'
 
 export const article = {
-  author: 'Stefan Wullems',
-  date: '2024-12-19',
-  title: 'Content Audit with Ahrefs - Interactive SOP',
-  description: 'A comprehensive, step-by-step interactive guide for conducting content audits using Ahrefs data. Generate content inventory analysis, time-based performance insights, and export results to CSV.',
+    author: 'Stefan Wullems',
+    date: '2024-12-19',
+    title: 'Content Audit with Ahrefs - Interactive SOP',
+    description: 'A comprehensive, step-by-step interactive guide for conducting content audits using Ahrefs data. Generate content inventory analysis, time-based performance insights, and export results to CSV.',
 }
 
 export const metadata = {
-  title: article.title,
-  description: article.description,
+    title: article.title,
+    description: article.description,
 }
 
-# Content Audit with Ahrefs - Interactive SOP
+export default (props) => <ArticleLayout article={article} {...props} />
+
+<ContentAuditSOPProvider>
 
 This interactive Standard Operating Procedure (SOP) provides a complete step-by-step process for conducting a content audit using Ahrefs data. Follow each section in order to analyze your or your competitor website's content performance.
 
-## Overview
+Most content audits are tedious manual processes that take hours to complete. This interactive tool transforms that workflow into a streamlined 5-15 minute process that generates professional-grade analysis automatically.
 
-This workflow will help you:
-- Set up a project workspace for your audit
-- Export and process data from Ahrefs Site Explorer
-- Enrich data with published dates for time-based analysis
-- Generate content inventory analysis with composite scores
-- Create time-based performance analysis to identify trends
-- Export everything for further analysis
+## What This Workflow Delivers
 
-**Time required:** 5-15 minutes (depending on number of pages and configuration)
+This comprehensive audit system will help you generate two critical analyses that most SEO tools don't provide out of the box:
 
-## What You'll Get
+**Content Inventory Analysis** - A multi-dimensional performance ranking that combines traffic and link metrics into actionable composite scores. You'll get quartile rankings for referring domains, traffic, and link quality, plus a unique "Referring Domains per Visit" metric that shows link efficiency.
 
-### Content Inventory Analysis
-- **Composite Score**: Overall performance ranking combining traffic and link metrics
-- **Quartile Rankings**: Performance quartiles for referring domains, traffic, and link quality
-- **Referring Domains per Visit**: Link quality metric showing link efficiency
-- **Comprehensive Scoring**: Multi-dimensional analysis for content prioritization
-
-### Time-Based Performance Analysis
-- **Time-Based Index**: Shows how each page performs relative to content published before it
-- **Performance Trends**: Identify improving or declining content performance over time
-- **Benchmark Insights**: Values > 1.0 indicate above-average performance for the time period
-- **Strategic Planning**: Use trends to plan content updates and strategies
+**Time-Based Performance Analysis** - Revolutionary insights that show how each page performs relative to content published before it. This temporal analysis reveals performance trends and helps you identify improving or declining content over time.
 
 ### Export Capabilities
-- **CSV Export**: Download results for further analysis in Excel or other tools
-- **Structured Data**: Clean, organized data ready for reporting and decision-making
-- **Filtering Options**: Sort and filter results by various performance metrics
 
-## Before You Begin
+Everything exports to clean CSV files ready for Excel analysis, reporting, and strategic decision-making. No more manual data manipulation or formatting headaches.
 
-### Prerequisites
-- Access to Ahrefs (Site Explorer)
-- Website domain to analyze
-- Basic understanding of SEO metrics
+## Progress Overview
 
-### Data Export Requirements
-When exporting from Ahrefs, make sure to:
-1. Use **Site Explorer → Top Pages**
+Track your progress through each step of the content audit process:
+
+<ProgressTrackerWrapper />
+
+## Step 1: Project Setup
+
+Begin by configuring your content audit project. This establishes the workspace and settings for your analysis.
+
+Before starting, ensure you have:
+- **Access to Ahrefs** (Site Explorer specifically)
+- **Website domain** to analyze (yours or a competitor's)
+- **Basic SEO knowledge** for interpreting results
+
+<ProjectSetupStepWrapper />
+
+## Step 2: Upload Your Data
+
+Upload your Ahrefs CSV export to begin the analysis. Make sure you've exported the data with the correct settings.
+
+### Critical Export Settings
+
+When exporting from Ahrefs Site Explorer, these settings are non-negotiable:
+
+1. Navigate to **Site Explorer → Top Pages**
 2. Set date range to **"Don't compare"**
-3. **Enable "SERP titles"** (critical for analysis)
+3. **Enable "SERP titles"** (absolutely critical for the analysis)
 4. Export as **CSV with UTF-8 encoding**
-5. Include all available rows for comprehensive analysis
+5. Include all available rows for comprehensive coverage
 
-### Sample Data for Testing
-Don't have Ahrefs data ready? Download our [sample CSV file](/sample-ahrefs-data.csv) to test the interactive workflow below. This sample contains realistic data that demonstrates all features of the content audit system.
+### Test with Sample Data
+
+Don't have Ahrefs data ready? Download our [sample CSV file](/sample-ahrefs-data.csv) to explore the full workflow. This realistic dataset demonstrates every feature and gives you a complete preview of what your analysis will look like.
+
+<DataUploadStepWrapper />
+
+## Step 3: Configure Analysis
+
+Set up how your content audit analysis will be performed. Choose between median or average calculations and decide whether to include published date analysis.
+
+### Analysis Strategy Guidelines
+
+**For most websites**, use median calculations rather than averages - this provides more stable results when dealing with high backlink variance. Include published date analysis whenever possible for comprehensive temporal insights.
+
+**Published Date Analysis** adds powerful time-based insights but requires fetching data from each page, which can take several minutes. The delay between requests helps avoid being blocked by websites.
+
+<AnalysisConfigStepWrapper />
+
+## Step 4: Run the Analysis
+
+Process your data and generate the comprehensive content audit results. This step will analyze all your pages and create both content inventory and time-based performance insights.
+
+The analysis will:
+- Calculate composite performance scores for each page
+- Determine quartile rankings across key metrics
+- Generate time-based performance indices (if enabled)
+- Prepare all data for export and visualization
+
+<RunAnalysisStepWrapper />
+
+## Step 5: View and Export Results
+
+Review your analysis results and export them for further analysis. The results include detailed metrics and insights you can use to optimize your content strategy.
+
+<ResultsStepWrapper />
 
 ---
 
-## Interactive Workflow
+## Complete Interactive Workflow
 
-The interactive tool below will guide you through each step of the content audit process. Each step builds on the previous one, so please complete them in order.
+Here's the full workflow with all steps integrated in one place:
 
-<ContentAuditSOP />
+<ContentAuditWorkflow showProgressTracker={false} />
 
 ---
 
-## Understanding Your Results
+## Interpreting Your Results
 
-### Content Inventory Metrics Explained
+### Content Inventory Metrics
 
-**Composite Score**
-- Combines referring domains and traffic quartiles
-- Range: 2-8 (higher = better overall performance)
-- Use to prioritize content optimization efforts
+**Composite Score (2-8 Range)**
+This unified performance metric combines referring domains and traffic quartiles. Higher scores indicate better overall performance and should guide your optimization priorities.
 
-**Quartile Rankings (Q1-Q4)**
-- Q4 = Top 25% (best performing)
-- Q3 = 50th-75th percentile (above average)
-- Q2 = 25th-50th percentile (below average)
-- Q1 = Bottom 25% (needs attention)
+**Quartile Classifications**
+- **Q4 (Top 25%)**: Your star performers - analyze what makes them successful
+- **Q3 (50th-75th percentile)**: Above average content with optimization potential
+- **Q2 (25th-50th percentile)**: Below average content needing attention
+- **Q1 (Bottom 25%)**: Priority candidates for major improvements or removal
 
 **Referring Domains per Visit**
-- Measures link acquisition efficiency
-- Higher values indicate better link-building ROI
-- Useful for identifying content that attracts quality backlinks
+This unique efficiency metric reveals which content attracts quality backlinks relative to its traffic. High values indicate excellent link-building ROI and content that naturally earns authority.
 
-### Time-Based Analysis Interpretation
+### Time-Based Analysis Insights
 
-**Time-Based Index Values**
-- **> 1.5**: Exceptional performance (significantly outperforming historical average)
-- **1.0-1.5**: Good performance (above historical average)
-- **0.5-1.0**: Below average performance
-- **< 0.5**: Poor performance (may need significant improvement)
+**Understanding Index Values**
+
+The time-based index reveals performance patterns that traditional metrics miss:
+
+- **> 1.5**: Exceptional performers significantly outpacing historical averages
+- **1.0-1.5**: Solid performers exceeding typical benchmarks
+- **0.5-1.0**: Below average content with clear improvement opportunities
+- **< 0.5**: Underperformers requiring immediate strategic attention
 
 **Strategic Applications**
-- Identify content formats or topics that consistently outperform
-- Find underperforming recent content that needs optimization
-- Understand seasonal or temporal performance patterns
-- Plan content calendar based on performance trends
 
-## Next Steps and Recommendations
+Use these temporal insights to identify successful content patterns, spot underperforming recent content, understand seasonal trends, and plan your content calendar based on proven performance patterns.
 
-### For High-Performing Content
-1. **Amplify Success**: Identify what makes top content work and replicate those elements
-2. **Internal Linking**: Use high-performing content as hub pages
-3. **Update and Refresh**: Keep top content current and comprehensive
-4. **Promote Further**: Increase promotion of proven performers
+## Strategic Recommendations
 
-### For Underperforming Content
-1. **Content Audit**: Review for accuracy, depth, and user value
-2. **Technical SEO**: Check for crawling, indexing, or technical issues
-3. **Keyword Optimization**: Ensure content targets relevant, valuable keywords
-4. **User Experience**: Improve readability, structure, and engagement
+### Amplifying High Performers
 
-### For Time-Based Insights
-1. **Trend Analysis**: Look for patterns in content performance over time
-2. **Content Calendar**: Plan new content based on successful historical patterns
-3. **Update Cycles**: Establish regular update schedules for declining content
-4. **Competitive Analysis**: Compare trends with competitor content strategies
+Your top-quartile content deserves strategic amplification. Analyze what makes these pieces successful - topic selection, content depth, format, or promotion strategy. Use high performers as internal linking hubs and keep them current with regular updates.
 
-## Tips for Success
+### Rehabilitating Underperformers
 
-### Data Quality
-- Ensure complete data export from Ahrefs
-- Include published date fetching for time-based analysis
-- Use appropriate delay settings to avoid being blocked
-- Verify CSV format and column headers before upload
+Content in the bottom quartiles needs systematic improvement. Audit for accuracy and depth, check for technical SEO issues, optimize keyword targeting, and improve user experience elements like readability and structure.
 
-### Analysis Strategy
-- **Use Median** for sites with high backlink variance (recommended for most sites)
-- **Use Average** for smaller sites with consistent link patterns
-- Include published dates for comprehensive time-based analysis
-- Export results immediately after analysis for backup
+### Leveraging Time-Based Insights
 
-### Ongoing Monitoring
-- Run audits quarterly to track content performance trends
-- Compare results over time to measure content strategy effectiveness
-- Use insights to inform content creation and optimization priorities
-- Document findings and recommendations for team reference
+Temporal analysis reveals your content's performance trajectory. Look for patterns in successful content timing, establish update cycles for declining pieces, and use historical performance data to inform your content calendar strategy.
 
----
+## Optimization Tips
 
-## Troubleshooting
+### Data Quality Best Practices
 
-### Common Issues
+Successful audits start with complete, accurate data exports. Always include SERP titles in your Ahrefs export, use appropriate delay settings during published date fetching to avoid being blocked, and verify CSV formatting before upload.
+
+### Ongoing Monitoring Framework
+
+Run quarterly audits to track content performance trends over time. Compare results between audit cycles to measure content strategy effectiveness, and use insights to continuously refine your content creation and optimization priorities.
+
+## Troubleshooting Common Issues
 
 **"No valid data rows found"**
-- Check CSV format and ensure it has proper headers
-- Verify you exported from Ahrefs Top Pages (not other sections)
-- Ensure SERP titles were enabled during export
+This typically indicates CSV formatting issues. Verify you exported from Ahrefs Top Pages (not other sections), ensure SERP titles were enabled, and check that your CSV has proper headers.
 
-**"Failed to find published dates"**
-- Some pages may not have discoverable published dates
-- This is normal and won't affect the overall analysis
-- Pages without dates are excluded from time-based analysis only
+**Published date fetching failures**
+Some pages lack discoverable published dates - this is normal and won't affect your overall analysis. Pages without dates simply get excluded from time-based analysis while remaining in the content inventory assessment.
 
-**Analysis taking too long**
-- Reduce published date delay for faster processing
-- Consider analyzing smaller data sets initially
-- Published dates are the most time-consuming part of the process
+**Performance optimization**
+For large datasets or slower processing, reduce the published date delay setting, consider processing smaller initial batches (under 1000 pages), and remember that published date fetching is the most time-intensive part of the workflow.
 
-### Performance Tips
-- Process smaller batches (< 1000 pages) for initial runs
-- Use 500ms delay for most reliable published date fetching
-- Save your project configuration for future runs
-- Export results immediately after completion
+The interactive tool provides detailed guidance and error messaging for each step, making troubleshooting straightforward and keeping your analysis moving forward smoothly.
 
-Need help? The interactive tool above provides detailed guidance for each step, including error messages and troubleshooting tips.
+</ContentAuditSOPProvider>
