@@ -2,10 +2,10 @@ import { type Metadata } from 'next'
 
 import { Card } from '@/components/Card'
 import { SimpleLayout } from '@/components/SimpleLayout'
-import { type ArticleWithSlug, getAllArticles } from '@/lib/articles'
+import { type SopWithSlug, getAllSops } from '@/lib/sops'
 import { formatDate } from '@/lib/formatDate'
 
-function Article({ article }: { article: ArticleWithSlug }) {
+function Article({ article }: { article: SopWithSlug }) {
   return (
     <article className="md:grid md:grid-cols-4 md:items-baseline">
       <Card className="md:col-span-3">
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ArticlesIndex() {
-  let articles = await getAllArticles()
+  let articles = await getAllSops()
 
   return (
     <SimpleLayout
