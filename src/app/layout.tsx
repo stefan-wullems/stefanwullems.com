@@ -26,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="flex h-full bg-amber-50 dark:bg-black">
+      <body className="flex h-full bg-zinc-800 dark:bg-zinc-800">
         <Providers>
           <div className="flex w-full">
             <Layout>{children}</Layout>

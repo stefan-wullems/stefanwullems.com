@@ -6,7 +6,6 @@ import {
   SOPStepActions,
   SOPStepContent,
 } from '@/components/sop/ui/SOPStep'
-import { ContentInventory } from '@/lib/sop'
 import { DataUploadForm } from '@/components/sop'
 import { ContentInventoryVisualization } from '@/components/sop/analyses/content-inventory'
 
@@ -64,8 +63,4 @@ export function ContentInventoryAnalysisStep() {
       </SOPStepContent>
     </SOPStep>
   )
-}
-
-export function InventoryAnalysisStepWrapper() {
-  return <ContentInventoryAnalysisStep />
 }

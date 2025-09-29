@@ -16,10 +16,17 @@ export interface ContentInventoryItem {
 }
 
 // Pure mathematical functions
-export const calculateQuartiles = (values: number[]): [number, number, number] => {
+export const calculateQuartiles = (
+  values: number[],
+): [number, number, number] => {
   if (values.length === 0) return [0, 0, 0]
 
-  const sorted = [...values].sort((a, b) => a - b)
+  // Filter out zeros for better quartile distribution
+  const nonZeroValues = values.filter((v) => v > 0)
+
+  if (nonZeroValues.length === 0) return [0, 0, 0]
+
+  const sorted = nonZeroValues.sort((a, b) => a - b)
   const q1Index = Math.floor(sorted.length * 0.25)
   const q2Index = Math.floor(sorted.length * 0.5)
   const q3Index = Math.floor(sorted.length * 0.75)
@@ -34,9 +41,9 @@ export const getQuartile = (
   const [q1, q2, q3] = quartiles
 
   if (value === 0) return 1
-  if (value <= q1) return 1
-  if (value <= q2) return 2
-  if (value <= q3) return 3
+  if (value <= q1) return 2
+  if (value <= q2) return 3
+  if (value <= q3) return 4
   return 4
 }
 
@@ -44,8 +51,8 @@ export const getTrafficQuartile = (
   traffic: number,
   quartiles: [number, number, number],
 ): number => {
-  // For traffic quartile, 0 or missing traffic gets quartile 4 (worst performance)
-  if (!traffic || traffic === 0) return 4
+  // For traffic quartile, 0 or missing traffic gets quartile 1 (worst performance)
+  if (!traffic || traffic === 0) return 1
   return getQuartile(traffic, quartiles)
 }
 
@@ -54,13 +61,14 @@ export const getRdPerVisitQuartile = (
   referringDomains: number,
   quartiles: [number, number, number],
 ): number => {
-  // Priority 1: if traffic is 0 or missing, force Q4 regardless of RD
-  if (!traffic || traffic === 0) return 4
+  // Priority 1: if traffic is 0 or missing, force Q1 regardless of RD
+  if (!traffic || traffic === 0) return 1
 
-  // Priority 2: if traffic is positive but RD is 0/missing, set to Q1
-  if (!referringDomains || referringDomains === 0) return 1
+  // Priority 2: if traffic is positive but RD is 0/missing, set to Q4
+  if (!referringDomains || referringDomains === 0) return 4
 
-  // Otherwise use normal quartile calculation
+  // Otherwise use normal quartile calculation for RD per visit ratio
+  // Higher ratio = better performance = higher quartile number
   const ratio = referringDomains / traffic
   return getQuartile(ratio, quartiles)
 }
@@ -95,14 +103,18 @@ export const createInventoryItem = (
 })
 
 // Higher-order functions for analysis
-export const analyzePages = (pages: AhrefsPageData[]): ContentInventoryItem[] => {
+export const analyzePages = (
+  pages: AhrefsPageData[],
+): ContentInventoryItem[] => {
   if (pages.length === 0) return []
 
   // Calculate all quartiles
-  const rdQuartiles = calculateQuartiles(pages.map(d => d.referringDomains))
-  const trafficQuartiles = calculateQuartiles(pages.map(d => d.organicTraffic))
+  const rdQuartiles = calculateQuartiles(pages.map((d) => d.referringDomains))
+  const trafficQuartiles = calculateQuartiles(
+    pages.map((d) => d.organicTraffic),
+  )
 
-  const rdPerVisitValues = pages.map(d => {
+  const rdPerVisitValues = pages.map((d) => {
     if (!d.organicTraffic || d.organicTraffic === 0 || !d.referringDomains) {
       return 0.0
     }
@@ -114,7 +126,10 @@ export const analyzePages = (pages: AhrefsPageData[]): ContentInventoryItem[] =>
   // Transform pages to inventory items
   return pages.map((pageData, index) => {
     const rdQuartile = getQuartile(pageData.referringDomains, rdQuartiles)
-    const trafficQuartile = getTrafficQuartile(pageData.organicTraffic, trafficQuartiles)
+    const trafficQuartile = getTrafficQuartile(
+      pageData.organicTraffic,
+      trafficQuartiles,
+    )
     const rdPerVisitQuartile = getRdPerVisitQuartile(
       pageData.organicTraffic,
       pageData.referringDomains,
@@ -134,7 +149,9 @@ export const analyzePages = (pages: AhrefsPageData[]): ContentInventoryItem[] =>
 }
 
 // Sorting and filtering functions
-export const sortByCompositeScore = (items: ContentInventoryItem[]): ContentInventoryItem[] =>
+export const sortByCompositeScore = (
+  items: ContentInventoryItem[],
+): ContentInventoryItem[] =>
   [...items].sort((a, b) => {
     if (b.compositeScore !== a.compositeScore) {
       return b.compositeScore - a.compositeScore
@@ -145,12 +162,17 @@ export const sortByCompositeScore = (items: ContentInventoryItem[]): ContentInve
     return 0
   })
 
-export const getTopPerformers = (items: ContentInventoryItem[], limit: number = 10): ContentInventoryItem[] =>
-  items.slice(0, limit)
+export const getTopPerformers = (
+  items: ContentInventoryItem[],
+  limit: number = 10,
+): ContentInventoryItem[] => items.slice(0, limit)
 
-export const filterByQuartile = (items: ContentInventoryItem[], quartile: number): ContentInventoryItem[] =>
-  items.filter(item =>
-    item.rdQuartile === quartile || item.trafficQuartile === quartile
+export const filterByQuartile = (
+  items: ContentInventoryItem[],
+  quartile: number,
+): ContentInventoryItem[] =>
+  items.filter(
+    (item) => item.rdQuartile === quartile || item.trafficQuartile === quartile,
   )
 
 // CSV export function
@@ -170,7 +192,7 @@ export const toCsvContent = (items: ContentInventoryItem[]): string => {
     'Traffic Quartile',
   ]
 
-  const rows = items.map(item => [
+  const rows = items.map((item) => [
     item.url,
     item.publishDate || '',
     item.pageTitle,
@@ -184,12 +206,14 @@ export const toCsvContent = (items: ContentInventoryItem[]): string => {
   ])
 
   return [headers, ...rows]
-    .map(row => row.map(cell => `"${cell}"`).join(','))
+    .map((row) => row.map((cell) => `"${cell}"`).join(','))
     .join('\n')
 }
 
 // Complete analysis pipeline
-export const createContentInventory = (pages: AhrefsPageData[]): ContentInventoryItem[] => {
+export const createContentInventory = (
+  pages: AhrefsPageData[],
+): ContentInventoryItem[] => {
   const items = analyzePages(pages)
   return sortByCompositeScore(items)
 }

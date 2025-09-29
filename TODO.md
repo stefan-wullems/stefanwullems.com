@@ -1,9 +1,9 @@
-- Use a csv parsing library rather than reinventing the wheel.
-- Q4 in content audit is wrong because it also includes infinite, if traffic is 0, default to q1
-- SOP layout with the progress to the side and perhaps wider tables
-- sop/LLM-instructions.md
+- MVP: Content rules for sop/LLM-instructions.md
+- MVP: Display content inventory as a table again (use one from tailwindplus)
+- MVP: Display time based analysis as a table again (use one from tailwindplus)
+
 - domain/LLM-instructions.md
-- notification when done with a certain step of a SOP (perhaps a pwa notification even)
+- Use a csv parsing library rather than reinventing the wheel.
 - Google analytics with custom events related to sop completion
 - Display time based analysis as a dot chart with x axis publish date and y axis the time based index.
 - Display content inventory as a dot chart with x axis referring domains and y axis traffic

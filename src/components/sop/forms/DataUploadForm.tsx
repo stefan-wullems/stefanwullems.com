@@ -3,6 +3,7 @@
 import { useState, useRef, DragEvent } from 'react'
 import { SOPStepContent, SOPStepActions } from '../ui/SOPStep'
 import { AhrefsPageData, parseCsvContent } from '@/lib/sop/ahrefs-page'
+import { Table } from '@/components/Table'
 
 export interface DataUploadFormProps {
   onComplete: (pages: AhrefsPageData[]) => void
@@ -51,7 +52,7 @@ export function DataUploadForm({
         throw new Error('CSV must contain URL and Title columns')
       }
 
-      setPreviewData(pages.slice(0, 5)) // Show first 5 rows as preview
+      setPreviewData(pages)
       setUploadedFile(file)
       onComplete(pages)
       setError('')
@@ -232,51 +233,18 @@ export function DataUploadForm({
 
       {previewData.length > 0 && (
         <div>
-          <h4 className="mb-2 text-sm font-medium text-zinc-800 dark:text-zinc-200">
-            Data Preview
-          </h4>
-          <div className="overflow-x-auto rounded-md border bg-white dark:border-zinc-600 dark:bg-zinc-800">
-            <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
-              <thead className="bg-zinc-50 dark:bg-zinc-800">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-zinc-500 uppercase dark:text-zinc-400">
-                    URL
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-zinc-500 uppercase dark:text-zinc-400">
-                    Title
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-zinc-500 uppercase dark:text-zinc-400">
-                    Referring Domains
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-zinc-500 uppercase dark:text-zinc-400">
-                    Traffic
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-200 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
-                {previewData.map((page, index) => (
-                  <tr key={index}>
-                    <td className="max-w-xs truncate px-6 py-4 text-xs text-zinc-900 dark:text-zinc-100">
-                      {page.url}
-                    </td>
-                    <td className="max-w-xs truncate px-6 py-4 text-xs text-zinc-900 dark:text-zinc-100">
-                      {page.pageTitle}
-                    </td>
-                    <td className="px-6 py-4 text-xs text-zinc-900 dark:text-zinc-100">
-                      {page.referringDomains}
-                    </td>
-                    <td className="px-6 py-4 text-xs text-zinc-900 dark:text-zinc-100">
-                      {page.organicTraffic}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-            Showing first {Math.min(5, previewData.length)} of{' '}
-            {previewData.length} rows
-          </p>
+          <h4 className="mb-2 text-lg font-semibold">Preview</h4>
+          <Table
+            columns={[
+              { header: 'URL', key: 'url', truncate: true },
+              { header: 'Title', key: 'pageTitle', truncate: true },
+              { header: 'Referring Domains', key: 'referringDomains' },
+              { header: 'Organic Traffic', key: 'organicTraffic' },
+            ]}
+            data={previewData}
+            paginatable={false}
+            rowsPerPage={5}
+          />
         </div>
       )}
     </div>
