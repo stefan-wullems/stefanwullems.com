@@ -1,6 +1,6 @@
 - MVP: Content rules for sop/LLM-instructions.md
-- MVP: Display time based analysis as a table again (use one from tailwindplus)
 
+- Add weights to content inventory, and add different scoring strategies
 - Separate time based analysis into a separate component
 - domain/LLM-instructions.md
 - Use a csv parsing library rather than reinventing the wheel.

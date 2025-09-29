@@ -8,9 +8,9 @@ import { InventoryProgressTracker } from './_components/progress-tracker'
 
 export const article = {
     author: 'Stefan Wullems',
-    date: '2023-09-29',
+    date: '2025-09-29',
     title: 'Content Inventory Analysis - Interactive SOP',
-    description: 'Generate comprehensive content inventory with quartile rankings, composite scores, and performance insights. Identify your star performers, optimization candidates, and priority improvement pages using multi-dimensional analysis.',
+    description: 'Generate comprehensive content inventory with content scores and performance insights. Identify your star performers, optimization candidates, and priority improvement pages using multi-dimensional analysis.',
 }
 
 export const metadata = {
@@ -28,204 +28,62 @@ export default (props) => (
     </ContentInventorySOPProvider>
 )
 
-This streamlined Standard Operating Procedure (SOP) provides a focused process for conducting content inventory analysis using Ahrefs data. Generate comprehensive performance rankings and actionable insights in minutes, not hours.
+Create a content inventory interactively using Ahrefs data to classify, rank, and evaluate your website content.
 
-**Content inventory analysis creates a strategic roadmap for your content optimization efforts** - showing you exactly which pages deserve amplification, which need improvement, and which might be candidates for removal.
+**Goal**
+Provide a clear process for conducting a content inventory analysis using Ahrefs data to classify, rank, and evaluate website content.
 
-## What This Analysis Delivers
+**Ideal Outcome**
+You generate a complete content inventory with quartile rankings, composite scores, and efficiency metrics that highlight star performers, optimization candidates, and underperformers.
 
-**Comprehensive Content Classification System** that transforms raw performance data into actionable insights:
+**Why this is Important**
+This analysis creates a roadmap for content optimization. It helps you decide which pages to amplify, which to improve, and which to remove, ensuring resources are used effectively.
 
-**Composite Scores (2-8 Range)** - Unified performance metrics that combine traffic and backlink data into single, comparable scores. Higher scores indicate better overall performance and should guide your optimization priorities.
+**Where this is done**
+Inside **Ahrefs Site Explorer** and the Content Inventory Analysis tool.
 
-**Quartile Classifications** - Clear Q1-Q4 rankings that show relative performance across your entire content portfolio. Know instantly which content is in your top 25% (Q4) and which needs immediate attention (Q1).
+**When this is done**
+Whenever you need to assess your or your competitor’s website’s content performance, typically once per quarter or after publishing a significant batch of new content.
 
-**Referring Domains per Visit** - Unique efficiency metric that reveals which content attracts quality backlinks relative to its traffic volume. High values indicate excellent link-building ROI and content that naturally earns authority.
+**Who does this**
+Content strategists, SEO specialists, or marketing team members responsible for content performance.
 
-**Strategic Performance Insights** - Identify star performers to model, optimization candidates with potential, and underperformers that need major improvements or removal.
+**Prerequisites or Requirements**
 
-## Prerequisites
+* Website domain to analyze (own site or competitor)
+* Access to **Ahrefs Site Explorer**
+* **CSV export** from Ahrefs with correct settings
 
-Before starting the content inventory analysis, ensure you have:
+## Step 1. Export Data from Ahrefs
 
-- **Access to Ahrefs** (Site Explorer specifically)
-- **Website domain** to analyze (yours or a competitor's)
-- **Ahrefs CSV export** with correct settings (see Step 1)
-- **Strategic mindset** - This analysis focuses on actionable insights rather than raw data
+1. Open **Ahrefs Site Explorer**.
+2. Navigate to **Top Pages**.
+3. Set date range to **“Don’t compare”** to prevent errors in the export.
+4. Enable **“SERP titles”** for proper page identification.
+5. Export as **CSV with UTF-8 encoding**.
+6. Select **all available rows** for the most reliable dataset.
 
-## Step 1: Upload Your Data
-
-Upload your Ahrefs CSV export to begin the inventory analysis. Proper export settings ensure accurate quartile calculations and meaningful insights.
-
-### Critical Export Settings
-
-When exporting from Ahrefs Site Explorer, these settings are **essential** for accurate analysis:
-
-1. **Navigate to Site Explorer → Top Pages**
-2. **Set date range to "Don't compare"** - Prevents parsing issues with comparison columns
-3. **Enable "SERP titles"** - Critical for proper page identification in results
-4. **Export as CSV with UTF-8 encoding** - Ensures all characters display correctly
-5. **Include all available rows** - Larger datasets provide more reliable quartile boundaries
+## Step 2. Upload Data
 
 <UploadAhrefsPageData />
 
-## Step 2: Content Inventory Analysis
-
-Generate comprehensive content performance insights with quartile rankings and composite scores.
-
-### What You'll Get
-
-**Performance Classification System:**
-- **Q4 (Top 25%)** - Your star performers to analyze and amplify
-- **Q3 (50th-75th percentile)** - Above average content with optimization potential
-- **Q2 (25th-50th percentile)** - Below average content needing strategic attention
-- **Q1 (Bottom 25%)** - Priority candidates for major improvements or removal
-
-**Strategic Insights:**
-- **Top performers** - Content to model and use as internal linking hubs
-- **Efficiency champions** - Pages with high referring domains per visit ratios
-- **Optimization candidates** - Content with potential that needs focused improvements
-- **Resource allocation guidance** - Where to invest your optimization efforts first
+## Step 3. Run Content Inventory Analysis
 
 <ContentInventoryAnalysisStep />
 
----
+> 💡 **Tip**: Quartiles divide your content into four buckets (Q1–Q4). Instead of obsessing over raw numbers, quartiles show relative performance. If a page lands in Q4, it outperforms 75% of your content. If it lands in Q1, it underperforms compared to 75% of your portfolio. This way you focus on patterns, not isolated datapoints.
 
-## Interpreting Your Content Inventory
+## Step 4. Interpret
 
-### Understanding Composite Scores
+1. Check **2–8 point composite scores**:
 
-**Score Range (2-8)** - Combines traffic and referring domain quartiles into unified performance metrics:
-- **8 points** - Q4 traffic + Q4 referring domains (your absolute best performers)
-- **6-7 points** - Mixed high performance (one Q4, one Q3 metric)
-- **4-5 points** - Average performance (Q2-Q3 combinations)
-- **2-3 points** - Below average performance (Q1-Q2 combinations)
+   * **6–8**: High-performing content; amplify and maintain.
+   * **4–5**: Mid-level performers; prioritize optimization.
+   * **2–3**: Underperformers; consider overhaul, consolidation, or removal.
 
-### Composite Score Strategy
+2. Identify **efficiency champions** with high *referring domains per visit*.
+   > Example: A page with 300+ referring domains but very little traffic signals “earned links” (people linked because of quality or originality, not just rankings).
 
-**High Scorers (6-8 Points)**
-Your content portfolio's crown jewels that deserve strategic amplification:
-- **Analyze success factors** - What makes these pieces perform well?
-- **Create similar content** - Replicate successful formats, topics, and approaches
-- **Internal linking hubs** - Use these as anchor points for site architecture
-- **Maintenance priority** - Keep these pages current and optimized
+3. Spot **low-efficiency pages** where traffic doesn’t translate into authority. These may need targeted outreach or better internal linking.
 
-**Medium Scorers (4-5 Points)**
-The backbone of your content with clear optimization potential:
-- **Identify improvement opportunities** - Focus on the weaker quartile metric
-- **Content enhancement** - Add depth, update information, improve user experience
-- **Promotion opportunities** - May need better internal linking or social amplification
-- **Quick wins potential** - Often easiest to move into higher performance tiers
-
-**Low Scorers (2-3 Points)**
-Strategic decision candidates requiring careful evaluation:
-- **Performance analysis** - Understand why these pages underperform
-- **Consolidation opportunities** - Can multiple weak pages be combined effectively?
-- **Removal candidates** - Some may be draining crawl budget without providing value
-- **Major overhaul needs** - Significant improvements required for meaningful impact
-
-### Quartile Classification Insights
-
-**Q4 Pages (Top 25%)**
-Your content success templates:
-- **Study systematically** - What topics, formats, and strategies work?
-- **Scale successful approaches** - Create more content following proven patterns
-- **Protect and enhance** - Regular updates to maintain competitive advantage
-- **Benchmark standards** - Use as quality standards for new content
-
-**Q1 Pages (Bottom 25%)**
-Priority improvement opportunities:
-- **Root cause analysis** - Technical issues, thin content, or poor targeting?
-- **Strategic evaluation** - Worth improving or better to remove?
-- **Resource allocation** - Focus limited optimization resources effectively
-- **Content audit insights** - What patterns emerge in underperforming content?
-
-### Referring Domains per Visit Analysis
-
-**High Efficiency Content**
-Pages that earn links naturally relative to their traffic:
-- **Link magnet identification** - What makes these pages naturally link-worthy?
-- **Content format insights** - Which formats earn disproportionate authority?
-- **Topic authority** - Subject areas where your content naturally attracts links
-- **Promotion strategy** - Content worth additional outreach investment
-
-**Low Efficiency Content**
-Traffic that doesn't translate to authority:
-- **Link building opportunities** - Pages that could benefit from targeted outreach
-- **Content enhancement** - Make more link-worthy through improvements
-- **Internal linking** - Strategic internal links to improve authority flow
-- **Conversion focus** - May be better optimized for conversions than links
-
-## Strategic Applications
-
-### Content Portfolio Optimization
-
-**Amplification Strategy**
-Focus resources on content with proven performance:
-- **Top quartile investment** - Enhance already-successful content
-- **Format replication** - Create more content following successful patterns
-- **Topic expansion** - Explore related subjects in high-performing niches
-- **Distribution amplification** - Promote proven performers more aggressively
-
-**Improvement Pipeline**
-Systematic approach to raising performance across quartiles:
-- **Q3 to Q4 elevation** - Small improvements for significant gains
-- **Q2 enhancement projects** - Medium-term optimization initiatives
-- **Q1 strategic decisions** - Improve, consolidate, or remove underperformers
-- **Resource allocation** - Focus efforts where they'll have maximum impact
-
-### Competitive Intelligence
-
-**When analyzing competitor data:**
-- **Benchmark comparison** - How does their top quartile compare to yours?
-- **Content gap identification** - Topics where they excel but you don't
-- **Format insights** - What content types drive their success?
-- **Link acquisition patterns** - Which of their content naturally earns authority?
-
-## Advanced Analysis Techniques
-
-### Portfolio Health Assessment
-
-**Distribution Analysis**
-- **Quartile balance** - Is too much content concentrated in lower quartiles?
-- **Score concentration** - Are composite scores clustering at certain levels?
-- **Efficiency patterns** - Which content types consistently earn more links per visit?
-
-**Performance Correlation Studies**
-- **Topic performance patterns** - Which subjects consistently rank in higher quartiles?
-- **Content length correlation** - How does depth relate to composite scores?
-- **Freshness impact** - Do newer or older pages perform better in your niche?
-
-### ROI-Focused Optimization
-
-**Quick Wins Identification**
-Target content that's closest to quartile boundaries:
-- **Q3 → Q4 candidates** - Small improvements for major classification gains
-- **Q2 → Q3 elevation** - Medium effort for solid performance improvements
-- **Efficiency optimization** - Focus on improving referring domains per visit ratios
-
-**Resource Allocation Framework**
-- **High-impact, low-effort** - Q3 pages needing minor improvements
-- **High-impact, high-effort** - Q2 pages with strong potential requiring major work
-- **Low-impact decisions** - Q1 pages where removal might be more efficient than improvement
-
-## Building Your Content Strategy
-
-### Using Inventory Insights for Planning
-
-**Content Creation Priorities**
-- **Model successful patterns** - Create more content following Q4 page formats
-- **Fill strategic gaps** - Develop content for underserved but high-potential topics
-- **Format diversification** - Experiment with content types that show high efficiency ratios
-
-**Optimization Roadmap**
-- **Phase 1** - Quick wins moving Q3 content to Q4 performance
-- **Phase 2** - Medium-term projects elevating Q2 content
-- **Phase 3** - Strategic decisions about Q1 content (improve, consolidate, or remove)
-
-**Performance Monitoring**
-- **Quarterly analysis** - Track how content moves between quartiles over time
-- **Composite score trends** - Monitor overall portfolio health improvements
-- **Efficiency tracking** - Watch referring domains per visit ratios for optimization impact
-
-Your content inventory analysis provides the strategic foundation for data-driven content optimization, helping you focus limited resources where they'll deliver maximum impact.
+> 💡 **Context**: Referring domains per visit helps separate *passive link-building* (pages rank high, so they naturally get links) from *active link-worthiness* (pages get links because they truly resonate). Especially useful when analyzing competitor sites — it highlights which posts genuinely gained traction, not just rankings.

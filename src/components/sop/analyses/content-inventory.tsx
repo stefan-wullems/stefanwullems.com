@@ -102,6 +102,23 @@ export function ContentInventoryVisualization({
                 </span>
               ),
             },
+            {
+              header: 'Referring Domains per Visit',
+              key: 'referringDomainsPerVisit',
+              sortable: true,
+            },
+            {
+              header: 'Referring Domains per Visit Quartile',
+              key: 'rdPerVisitQuartile',
+              sortable: true,
+              accessor: (item) => (
+                <span
+                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${QUARTILE_COLORS[item.rdPerVisitQuartile] || QUARTILE_COLORS.default}`}
+                >
+                  Q{item.rdPerVisitQuartile}
+                </span>
+              ),
+            },
           ]}
         />
       )}
