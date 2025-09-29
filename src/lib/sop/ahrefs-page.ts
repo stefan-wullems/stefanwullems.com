@@ -16,6 +16,16 @@ export interface PublishedDateProgress {
   rate: number // URLs per second
   estimatedTimeRemaining: number // seconds
   elapsedTime: number // seconds
+  isCompleted?: boolean
+  summary?: {
+    successCount: number
+    failedCount: number
+    successRate: number // percentage
+    dateRange?: {
+      earliest: string
+      latest: string
+    }
+  }
 }
 
 // Mapping from Ahrefs column names to internal camelCase names
@@ -222,10 +232,29 @@ export async function enrichWithPublishedDates(
     }
   }
 
-  // Final progress report
+  // Final progress report with summary
   if (onProgress) {
     const elapsedTime = (Date.now() - startTime) / 1000
     const rate = completed / Math.max(elapsedTime, 0.1)
+
+    // Calculate summary statistics
+    const successCount = enrichedPages.filter((page) => page.publishDate).length
+    const failedCount = enrichedPages.length - successCount
+    const successRate = (successCount / enrichedPages.length) * 100
+
+    // Find date range
+    const datesFound = enrichedPages
+      .map((page) => page.publishDate)
+      .filter((date): date is string => !!date)
+      .sort()
+
+    const dateRange =
+      datesFound.length > 0
+        ? {
+            earliest: datesFound[0],
+            latest: datesFound[datesFound.length - 1],
+          }
+        : undefined
 
     onProgress({
       completed: pages.length,
@@ -234,6 +263,13 @@ export async function enrichWithPublishedDates(
       rate,
       estimatedTimeRemaining: 0,
       elapsedTime,
+      isCompleted: true,
+      summary: {
+        successCount,
+        failedCount,
+        successRate,
+        dateRange,
+      },
     })
   }
 

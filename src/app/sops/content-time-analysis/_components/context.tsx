@@ -1,81 +1,90 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react'
 import {
   AhrefsPageData,
   enrichWithPublishedDates,
   PublishedDateProgress,
 } from '@/lib/sop/ahrefs-page'
-import { ContentInventory } from '@/lib/sop/content-inventory'
 import { TimeBasedAnalysis } from '@/lib/sop/time-based-analysis'
+import { AnalysisConfig } from '@/components/sop/forms/AnalysisConfigForm'
 
-import { AnalysisConfig } from '@/components/sop/AnalysisConfigForm'
+export type TimeAnalysisStepId = 'data-upload' | 'published-dates' | 'analysis'
 
-export type SOPStepId = 'data-upload' | 'published-dates' | 'analysis'
-
-interface SOPState {
-  currentStep: SOPStepId
-  completedSteps: Set<SOPStepId>
+interface TimeAnalysisSOPState {
+  currentStep: TimeAnalysisStepId
+  completedSteps: Set<TimeAnalysisStepId>
   uploadedPages?: AhrefsPageData[]
   analysisConfig?: AnalysisConfig
-  enrichedPages?: AhrefsPageData[]
-  contentInventory?: ContentInventory
   timeBasedAnalysis?: TimeBasedAnalysis
-  errors: Record<SOPStepId, string>
-  isLoading: Record<SOPStepId, boolean>
+  errors: Record<TimeAnalysisStepId, string>
+  isLoading: Record<TimeAnalysisStepId, boolean>
   publishedDateProgress?: PublishedDateProgress
 }
 
-export interface ProgressStep {
-  id: SOPStepId
+export interface TimeAnalysisProgressStep {
+  id: TimeAnalysisStepId
   title: string
   isCompleted: boolean
   isActive: boolean
   hasError: boolean
 }
 
-export function useContentAuditSOP() {
-  const [state, setState] = useState<SOPState>({
+export function useContentTimeAnalysisSOP() {
+  const [state, setState] = useState<TimeAnalysisSOPState>({
     currentStep: 'data-upload',
     completedSteps: new Set(),
-    errors: {} as Record<SOPStepId, string>,
-    isLoading: {} as Record<SOPStepId, boolean>,
+    errors: {} as Record<TimeAnalysisStepId, string>,
+    isLoading: {} as Record<TimeAnalysisStepId, boolean>,
   })
 
-  const setLoading = useCallback((step: SOPStepId, loading: boolean) => {
-    setState((prev) => ({
-      ...prev,
-      isLoading: { ...prev.isLoading, [step]: loading },
-    }))
-  }, [])
+  const setLoading = useCallback(
+    (step: TimeAnalysisStepId, loading: boolean) => {
+      setState((prev) => ({
+        ...prev,
+        isLoading: { ...prev.isLoading, [step]: loading },
+      }))
+    },
+    [],
+  )
 
-  const setError = useCallback((step: SOPStepId, error: string) => {
+  const setError = useCallback((step: TimeAnalysisStepId, error: string) => {
     setState((prev) => ({
       ...prev,
       errors: { ...prev.errors, [step]: error },
     }))
   }, [])
 
-  const clearError = useCallback((step: SOPStepId) => {
+  const clearError = useCallback((step: TimeAnalysisStepId) => {
     setState((prev) => ({
       ...prev,
       errors: { ...prev.errors, [step]: '' },
     }))
   }, [])
 
-  const completeStep = useCallback((step: SOPStepId, nextStep?: SOPStepId) => {
-    setState((prev) => {
-      const newCompletedSteps = new Set(prev.completedSteps)
-      newCompletedSteps.add(step)
+  const completeStep = useCallback(
+    (step: TimeAnalysisStepId, nextStep?: TimeAnalysisStepId) => {
+      setState((prev) => {
+        const newCompletedSteps = new Set(prev.completedSteps)
+        newCompletedSteps.add(step)
 
-      return {
-        ...prev,
-        completedSteps: newCompletedSteps,
-        currentStep: nextStep || prev.currentStep,
-        errors: { ...prev.errors, [step]: '' },
-      }
-    })
-  }, [])
+        return {
+          ...prev,
+          completedSteps: newCompletedSteps,
+          currentStep: nextStep || prev.currentStep,
+          errors: { ...prev.errors, [step]: '' },
+        }
+      })
+    },
+    [],
+  )
 
   const handleDataUpload = useCallback(
     async (pages: AhrefsPageData[]) => {
@@ -119,8 +128,8 @@ export function useContentAuditSOP() {
           analysisConfig: config,
         }))
 
-        // If published dates are enabled, fetch them now
-        if (config.includePublishedDates && state.uploadedPages) {
+        // Published dates are required for time-based analysis
+        if (state.uploadedPages) {
           // Set up progress callback
           const onProgress = (progress: PublishedDateProgress) => {
             setState((prev) => ({
@@ -136,13 +145,11 @@ export function useContentAuditSOP() {
             onProgress,
           )
 
-          // Keep the final progress state visible for a moment before clearing
-          await new Promise((resolve) => setTimeout(resolve, 1500))
-
+          // Keep the completed progress state visible (don't clear it)
           setState((prev) => ({
             ...prev,
             uploadedPages: enrichedPages,
-            publishedDateProgress: undefined,
+            // Keep the final progress state with completion info
           }))
         }
 
@@ -175,11 +182,6 @@ export function useContentAuditSOP() {
           analysisConfig: config,
         }))
 
-        // Generate content inventory
-        const contentInventory = ContentInventory.fromPageData(
-          state.uploadedPages,
-        )
-
         // Generate time-based analysis
         const timeBasedAnalysis = TimeBasedAnalysis.fromPageData(
           state.uploadedPages,
@@ -188,8 +190,6 @@ export function useContentAuditSOP() {
 
         setState((prev) => ({
           ...prev,
-          enrichedPages: state.uploadedPages,
-          contentInventory,
           timeBasedAnalysis,
         }))
 
@@ -208,7 +208,7 @@ export function useContentAuditSOP() {
 
   // Progress tracker steps
   const progressSteps = useMemo(
-    (): ProgressStep[] => [
+    (): TimeAnalysisProgressStep[] => [
       {
         id: 'data-upload',
         title: 'Data Upload',
@@ -225,7 +225,7 @@ export function useContentAuditSOP() {
       },
       {
         id: 'analysis',
-        title: 'Analysis & Results',
+        title: 'Time Analysis & Results',
         isCompleted: state.completedSteps.has('analysis'),
         isActive: state.currentStep === 'analysis',
         hasError: !!state.errors['analysis'],
@@ -234,7 +234,7 @@ export function useContentAuditSOP() {
     [state.completedSteps, state.currentStep, state.errors],
   )
 
-  const goToStep = useCallback((step: SOPStepId) => {
+  const goToStep = useCallback((step: TimeAnalysisStepId) => {
     setState((prev) => ({
       ...prev,
       currentStep: step,
@@ -257,10 +257,44 @@ export function useContentAuditSOP() {
     clearError,
 
     // Helper getters
-    isStepActive: (step: SOPStepId) => state.currentStep === step,
-    isStepCompleted: (step: SOPStepId) => state.completedSteps.has(step),
-    isStepLoading: (step: SOPStepId) => !!state.isLoading[step],
-    getStepError: (step: SOPStepId) => state.errors[step],
-    hasStepError: (step: SOPStepId) => !!state.errors[step],
+    isStepActive: (step: TimeAnalysisStepId) => state.currentStep === step,
+    isStepCompleted: (step: TimeAnalysisStepId) =>
+      state.completedSteps.has(step),
+    isStepLoading: (step: TimeAnalysisStepId) => !!state.isLoading[step],
+    getStepError: (step: TimeAnalysisStepId) => state.errors[step],
+    hasStepError: (step: TimeAnalysisStepId) => !!state.errors[step],
   }
+}
+
+type ContentTimeAnalysisSOPContextType = ReturnType<
+  typeof useContentTimeAnalysisSOP
+>
+
+const ContentTimeAnalysisSOPContext =
+  createContext<ContentTimeAnalysisSOPContextType | null>(null)
+
+interface ContentTimeAnalysisSOPProviderProps {
+  children: ReactNode
+}
+
+export function ContentTimeAnalysisSOPProvider({
+  children,
+}: ContentTimeAnalysisSOPProviderProps) {
+  const sop = useContentTimeAnalysisSOP()
+
+  return (
+    <ContentTimeAnalysisSOPContext.Provider value={sop}>
+      {children}
+    </ContentTimeAnalysisSOPContext.Provider>
+  )
+}
+
+export function useContentTimeAnalysisSOPContext() {
+  const context = useContext(ContentTimeAnalysisSOPContext)
+  if (!context) {
+    throw new Error(
+      'useContentTimeAnalysisSOPContext must be used within a ContentTimeAnalysisSOPProvider',
+    )
+  }
+  return context
 }

@@ -1,0 +1,247 @@
+import { SOPLayout } from '@/components/SOPLayout'
+import { ContentTimeAnalysisSOPProvider } from './_components/context'
+import {
+    UploadAhrefsPageData,
+    TimePublishedDateStepWrapper,
+    TimeAnalysisStepWrapper,
+} from './_components/steps'
+import { TimeAnalysisProgressTracker } from './_components/progress-tracker'
+
+export const article = {
+    author: 'Stefan Wullems',
+    date: '2023-09-29',
+    title: 'Content Time Analysis - Interactive SOP',
+    description: 'Discover how your content performs relative to its publication date with temporal performance analysis. Generate time-based insights that reveal performance trends and identify improving or declining content over time.',
+}
+
+export const metadata = {
+    title: article.title,
+    description: article.description,
+}
+
+export default (props) => (
+    <ContentTimeAnalysisSOPProvider>
+        <SOPLayout
+            article={article}
+            progressOverview={<TimeAnalysisProgressTracker />}
+            {...props}
+        />
+    </ContentTimeAnalysisSOPProvider>
+)
+
+This focused Standard Operating Procedure (SOP) provides a streamlined process for conducting time-based performance analysis using Ahrefs data. Discover how your content performs relative to its publication timeline and unlock insights that traditional SEO tools can't provide.
+
+**Time-based analysis reveals performance patterns that static metrics miss** - showing you which content outperforms or underperforms relative to when it was published, not just against current averages.
+
+## What This Analysis Delivers
+
+**Revolutionary Temporal Insights** that transform how you understand content performance:
+
+**Performance Index Values** - See exactly how each page performs compared to content published before it. Values above 1.0 indicate above-average performance for that publication period, while values below 1.0 suggest underperformance relative to historical benchmarks.
+
+**Trend Identification** - Spot content that's improving or declining over time, helping you identify successful strategies and content that needs attention.
+
+**Historical Benchmarking** - Compare pages against publication period averages rather than site-wide metrics, providing more meaningful performance context.
+
+**Strategic Content Planning** - Use historical performance data to inform your content calendar and understand what types of content have succeeded over different time periods.
+
+### Export Capabilities
+
+All results export to clean CSV files with performance indices, publication dates, and traffic metrics ready for deeper analysis, reporting, and strategic planning.
+
+## Prerequisites
+
+Before starting the time-based analysis, ensure you have:
+
+- **Access to Ahrefs** (Site Explorer specifically)
+- **Website domain** to analyze (yours or a competitor's)
+- **Ahrefs CSV export** with the correct settings (see Step 1)
+- **Time for published date fetching** - This analysis requires fetching publication dates from each page, which takes several minutes but provides insights unavailable elsewhere
+
+## Progress Overview
+
+Track your progress through the time-based analysis workflow. This streamlined process focuses specifically on temporal performance insights.
+
+## Step 1: Upload Your Data
+
+Upload your Ahrefs CSV export to begin the temporal analysis. The quality of your export directly impacts the analysis results.
+
+### Critical Export Settings
+
+When exporting from Ahrefs Site Explorer, these settings are **essential**:
+
+1. **Navigate to Site Explorer → Top Pages**
+2. **Set date range to "Don't compare"** - Ensures clean data without comparison columns
+3. **Enable "SERP titles"** - Required for the analysis to work properly
+4. **Export as CSV with UTF-8 encoding** - Prevents character issues
+5. **Include all available rows** - Larger datasets provide more reliable temporal analysis
+
+### Why These Settings Matter
+
+**SERP titles enabled** - The analysis algorithms depend on having page titles in the data for proper identification and results presentation.
+
+**"Don't compare" date range** - Comparison columns interfere with the parsing logic and can cause analysis errors.
+
+**UTF-8 encoding** - Ensures international characters and special symbols are preserved correctly.
+
+**Complete data export** - More comprehensive datasets enable better trend identification and more reliable performance comparisons.
+
+<UploadAhrefsPageData />
+
+## Step 2: Published Date Configuration
+
+Configure the published date fetching process that powers the temporal analysis. This step is **required** for time-based performance insights.
+
+### Why Published Dates Are Essential
+
+Time-based analysis **requires** publication dates to:
+
+- **Calculate Performance Indices** - Compare each page's performance against content published before it
+- **Identify Trends** - Reveal which content strategies have worked over time
+- **Provide Context** - Show performance relative to publication period rather than just current averages
+- **Enable Strategic Planning** - Use historical patterns to inform future content decisions
+
+### How Performance Indices Work
+
+The system calculates a performance index for each page by comparing its metrics (traffic, referring domains) to the average performance of all content published before it:
+
+- **Index > 1.0** - Page outperforms historical averages for its publication period
+- **Index < 1.0** - Page underperforms compared to content published before it
+- **Index = 1.0** - Page performs exactly at the historical average
+
+### Fetching Strategy
+
+**Recommended Settings:**
+- **Delay: 1000-2000ms** - Balances speed with website politeness
+- **Expect 5-15 minutes** - Depending on your dataset size
+- **Progress tracking** - Monitor fetching status in real-time
+
+The system fetches published dates from each page's HTML metadata, creating the timeline needed for temporal comparison.
+
+<TimePublishedDateStepWrapper />
+
+## Step 3: Time-Based Analysis
+
+Configure your analysis strategy and generate temporal performance insights that reveal how your content performs over time.
+
+### Analysis Strategy: Median vs Average
+
+Choose how the system calculates historical performance benchmarks:
+
+**Median (Recommended)**
+- More stable when dealing with traffic variance
+- Not skewed by viral content or outlier pages
+- Provides more reliable trend identification
+- Best for most content analysis scenarios
+
+**Average (Mean)**
+- Traditional mathematical averaging
+- Can be influenced by high-performing outliers
+- Useful when you want exceptional content to influence benchmarks
+
+### Understanding Your Results
+
+**Performance Index Interpretation:**
+- **> 1.5** - Exceptional performers significantly outpacing historical averages
+- **1.0-1.5** - Solid performers exceeding typical benchmarks for their publication period
+- **0.5-1.0** - Below average content with clear improvement opportunities
+- **< 0.5** - Underperformers requiring immediate strategic attention
+
+**Strategic Applications:**
+- **Identify Successful Patterns** - What content types perform best over time?
+- **Spot Declining Content** - Which pages need updates or promotion?
+- **Understand Seasonality** - How does publication timing affect performance?
+- **Plan Content Calendar** - Use historical data to optimize future publishing
+
+<TimeAnalysisStepWrapper />
+
+---
+
+## Interpreting Your Temporal Analysis
+
+### Performance Index Insights
+
+**Historical Context Matters**
+Your performance index shows how content performs relative to everything published before it, not just current site averages. This provides crucial context about whether content exceeded expectations for its time period.
+
+**Trend Identification**
+Look for patterns in your highest and lowest performers:
+- **Consistent outperformers** - What makes these pieces successful?
+- **Recent underperformers** - Is there a quality issue with newer content?
+- **Improving content** - Which older pieces are gaining traction?
+
+### Strategic Applications
+
+**Content Strategy Optimization**
+Use temporal insights to refine your content approach:
+- **Successful formats** - Which content types consistently outperform?
+- **Topic evolution** - How have successful topics changed over time?
+- **Seasonal patterns** - When is the best time to publish certain content?
+
+**Content Maintenance Priorities**
+Focus your optimization efforts strategically:
+- **High-potential underperformers** - Recent content with low indices may need promotion
+- **Declining stars** - Previously successful content that needs refreshing
+- **Consistent performers** - Content to model and amplify
+
+### Temporal Patterns to Watch
+
+**Publication Period Performance**
+- **Early adopter advantage** - Content published in emerging topics often outperforms
+- **Market saturation effects** - Later content in crowded topics may underperform
+- **Seasonal influences** - Publication timing can significantly affect performance indices
+
+## Advanced Analysis Techniques
+
+### Cohort Analysis
+Group content by publication periods to identify broader trends:
+- **Monthly cohorts** - How does performance vary by publication month?
+- **Seasonal cohorts** - Which seasons produce the best-performing content?
+- **Topic cohorts** - How do different subject areas perform over time?
+
+### Performance Trajectory Mapping
+Track how individual pieces evolve:
+- **Early winners** - Content that outperformed immediately and sustained success
+- **Slow burners** - Content that improved over time
+- **Flash successes** - Content that peaked early then declined
+
+### Competitive Intelligence
+When analyzing competitor data:
+- **Content gaps** - Time periods where they underperformed
+- **Successful patterns** - What content strategies worked for them over time?
+- **Market timing** - When did they succeed with specific topics?
+
+## Optimization Strategies
+
+### Based on Temporal Insights
+
+**High Performers (Index > 1.2)**
+- Analyze what made them successful for their time period
+- Create similar content to replicate success patterns
+- Use as internal linking hubs
+- Update and maintain to sustain performance
+
+**Underperformers (Index < 0.8)**
+- Investigate whether expectations were realistic for publication period
+- Consider updating with fresh information
+- Evaluate if topic is still relevant
+- May be candidates for consolidation or removal
+
+**Trend Identification**
+- Look for declining performance in recent content
+- Identify topics that consistently outperform
+- Spot seasonal patterns for content calendar planning
+- Recognize format preferences over time
+
+## Ongoing Temporal Analysis
+
+### Building a Temporal Database
+Run this analysis quarterly to build a historical performance database that becomes more valuable over time. Track how performance indices change and identify long-term content success patterns.
+
+### Content Calendar Integration
+Use temporal insights to optimize your publishing strategy:
+- **Peak performance periods** - When does your audience engage most?
+- **Content lifecycle patterns** - How long does content typically perform?
+- **Topic evolution tracking** - How do successful topics change over time?
+
+The time-based analysis provides insights that static performance metrics simply cannot deliver, helping you understand not just what performs well, but when and why it succeeds.
