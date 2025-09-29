@@ -1,5 +1,4 @@
-- MVP: Content rules for sop/LLM-instructions.md
-
+- Fix RD per visit things for content inventory
 - Add weights to content inventory, and add different scoring strategies
 - Separate time based analysis into a separate component
 - domain/LLM-instructions.md

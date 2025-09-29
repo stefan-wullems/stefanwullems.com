@@ -66,7 +66,7 @@ export function Table<T>({
   columns,
   initialSort,
   rowsPerPage = 10,
-  exportable = false,
+  exportable = true,
   paginatable = true,
 }: TableProps<T>) {
   const [{ key: sortKey, direction }, setSort] = React.useState<{

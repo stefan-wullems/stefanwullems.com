@@ -243,6 +243,7 @@ export function DataUploadForm({
             ]}
             data={previewData}
             paginatable={false}
+            exportable={false}
             rowsPerPage={5}
           />
         </div>

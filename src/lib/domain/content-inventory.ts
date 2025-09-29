@@ -68,9 +68,15 @@ export const getRdPerVisitQuartile = (
   if (!referringDomains || referringDomains === 0) return 4
 
   // Otherwise use normal quartile calculation for RD per visit ratio
-  // Higher ratio = better performance = higher quartile number
+  // Lower ratio = better performance (more efficient) = higher quartile number
   const ratio = referringDomains / traffic
-  return getQuartile(ratio, quartiles)
+  const [q1, q2, q3] = quartiles
+
+  // Invert the quartile logic for efficiency metric
+  if (ratio <= q1) return 4 // Most efficient
+  if (ratio <= q2) return 3
+  if (ratio <= q3) return 2
+  return 1 // Least efficient
 }
 
 // Composite score calculation
