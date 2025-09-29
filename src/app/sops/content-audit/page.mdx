@@ -2,11 +2,9 @@ import { ArticleLayout } from '@/components/ArticleLayout'
 import { ContentAuditSOPProvider } from '@/components/sop/ContentAuditSOPContext'
 import {
     ContentAuditWorkflow,
-    ProjectSetupStepWrapper,
     DataUploadStepWrapper,
-    AnalysisConfigStepWrapper,
-    RunAnalysisStepWrapper,
-    ResultsStepWrapper,
+    PublishedDateStepWrapper,
+    AnalysisStepWrapper,
     ProgressTrackerWrapper,
 } from '@/components/sop/ContentAuditWorkflow'
 
@@ -42,24 +40,22 @@ This comprehensive audit system will help you generate two critical analyses tha
 
 Everything exports to clean CSV files ready for Excel analysis, reporting, and strategic decision-making. No more manual data manipulation or formatting headaches.
 
+## Prerequisites
+
+Before starting the content audit, ensure you have:
+
+- **Access to Ahrefs** (Site Explorer specifically)
+- **Website domain** to analyze (yours or a competitor's)
+- **Basic SEO knowledge** for interpreting results
+- **Ahrefs CSV export** with the correct settings (see Step 1 for details)
+
 ## Progress Overview
 
 Track your progress through each step of the content audit process:
 
 <ProgressTrackerWrapper />
 
-## Step 1: Project Setup
-
-Begin by configuring your content audit project. This establishes the workspace and settings for your analysis.
-
-Before starting, ensure you have:
-- **Access to Ahrefs** (Site Explorer specifically)
-- **Website domain** to analyze (yours or a competitor's)
-- **Basic SEO knowledge** for interpreting results
-
-<ProjectSetupStepWrapper />
-
-## Step 2: Upload Your Data
+## Step 1: Upload Your Data
 
 Upload your Ahrefs CSV export to begin the analysis. Make sure you've exported the data with the correct settings.
 
@@ -79,35 +75,31 @@ Don't have Ahrefs data ready? Download our [sample CSV file](/sample-ahrefs-data
 
 <DataUploadStepWrapper />
 
-## Step 3: Configure Analysis
+## Step 2: Published Date Fetching
 
-Set up how your content audit analysis will be performed. Choose between median or average calculations and decide whether to include published date analysis.
+Configure and fetch published dates for powerful time-based analysis. This step enables insights that show how each page performs relative to content published before it.
 
-### Analysis Strategy Guidelines
+### Why Published Dates Matter
 
-**For most websites**, use median calculations rather than averages - this provides more stable results when dealing with high backlink variance. Include published date analysis whenever possible for comprehensive temporal insights.
+**Time-Based Performance Analysis** reveals performance trends that traditional metrics miss. See how content performs over time, identify improving or declining pages, and discover seasonal patterns.
 
-**Published Date Analysis** adds powerful time-based insights but requires fetching data from each page, which can take several minutes. The delay between requests helps avoid being blocked by websites.
+**Optional but Recommended** - Published date fetching takes several minutes but provides valuable temporal insights. You can skip this step if you prefer a faster analysis focused purely on current performance metrics.
 
-<AnalysisConfigStepWrapper />
+<PublishedDateStepWrapper />
 
-## Step 4: Run the Analysis
+## Step 3: Analysis & Results
 
-Process your data and generate the comprehensive content audit results. This step will analyze all your pages and create both content inventory and time-based performance insights.
+Configure your analysis strategy, run the comprehensive audit, and view your results. This final step combines everything into actionable insights.
 
-The analysis will:
-- Calculate composite performance scores for each page
-- Determine quartile rankings across key metrics
-- Generate time-based performance indices (if enabled)
-- Prepare all data for export and visualization
+### What You'll Get
 
-<RunAnalysisStepWrapper />
+**Content Inventory Analysis** - Multi-dimensional performance rankings with quartile classifications and composite scores.
 
-## Step 5: View and Export Results
+**Time-Based Analysis** - Performance indices showing how each page compares to historical benchmarks (if published dates were fetched).
 
-Review your analysis results and export them for further analysis. The results include detailed metrics and insights you can use to optimize your content strategy.
+**Export-Ready Results** - Clean CSV files ready for Excel analysis and reporting.
 
-<ResultsStepWrapper />
+<AnalysisStepWrapper />
 
 ---
 

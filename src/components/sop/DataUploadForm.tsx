@@ -6,13 +6,11 @@ import { AhrefsPageData, parseCsvContent } from '@/lib/sop/ahrefs-page'
 
 export interface DataUploadFormProps {
   onComplete: (pages: AhrefsPageData[]) => void
-  projectName: string
   isLoading?: boolean
 }
 
 export function DataUploadForm({
   onComplete,
-  projectName,
   isLoading = false,
 }: DataUploadFormProps) {
   const [isDragOver, setIsDragOver] = useState(false)

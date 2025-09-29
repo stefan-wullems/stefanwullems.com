@@ -19,7 +19,7 @@ export function DataUploadStep() {
     <SOPStep
       title="Data Upload"
       description="Upload your Ahrefs CSV export to begin the analysis"
-      stepNumber={2}
+      stepNumber={1}
       isCompleted={isStepCompleted('data-upload')}
       isActive={isStepActive('data-upload')}
       hasError={hasStepError('data-upload')}
@@ -27,7 +27,6 @@ export function DataUploadStep() {
     >
       <DataUploadForm
         onComplete={handleDataUpload}
-        projectName={state.projectConfig?.projectName || 'Content Audit'}
         isLoading={isStepLoading('data-upload')}
       />
     </SOPStep>

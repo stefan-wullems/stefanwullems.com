@@ -8,20 +8,14 @@ import {
 } from '@/lib/sop/ahrefs-page'
 import { ContentInventory } from '@/lib/sop/content-inventory'
 import { TimeBasedAnalysis } from '@/lib/sop/time-based-analysis'
-import { ProjectConfig } from '@/components/sop/ProjectSetupForm'
+
 import { AnalysisConfig } from '@/components/sop/AnalysisConfigForm'
 
-export type SOPStepId =
-  | 'project-setup'
-  | 'data-upload'
-  | 'analysis-config'
-  | 'run-analysis'
-  | 'results'
+export type SOPStepId = 'data-upload' | 'published-dates' | 'analysis'
 
 interface SOPState {
   currentStep: SOPStepId
   completedSteps: Set<SOPStepId>
-  projectConfig?: ProjectConfig
   uploadedPages?: AhrefsPageData[]
   analysisConfig?: AnalysisConfig
   enrichedPages?: AhrefsPageData[]
@@ -42,7 +36,7 @@ export interface ProgressStep {
 
 export function useContentAuditSOP() {
   const [state, setState] = useState<SOPState>({
-    currentStep: 'project-setup',
+    currentStep: 'data-upload',
     completedSteps: new Set(),
     errors: {} as Record<SOPStepId, string>,
     isLoading: {} as Record<SOPStepId, boolean>,
@@ -83,34 +77,6 @@ export function useContentAuditSOP() {
     })
   }, [])
 
-  const handleProjectSetup = useCallback(
-    async (config: ProjectConfig) => {
-      setLoading('project-setup', true)
-      clearError('project-setup')
-
-      try {
-        // In a real implementation, this would create the project structure
-        // For now, we'll just simulate the API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        setState((prev) => ({
-          ...prev,
-          projectConfig: config,
-        }))
-
-        completeStep('project-setup', 'data-upload')
-      } catch (error) {
-        setError(
-          'project-setup',
-          error instanceof Error ? error.message : 'Failed to create project',
-        )
-      } finally {
-        setLoading('project-setup', false)
-      }
-    },
-    [completeStep, setLoading, clearError, setError],
-  )
-
   const handleDataUpload = useCallback(
     async (pages: AhrefsPageData[]) => {
       setLoading('data-upload', true)
@@ -127,7 +93,7 @@ export function useContentAuditSOP() {
           uploadedPages: pages,
         }))
 
-        completeStep('data-upload', 'analysis-config')
+        completeStep('data-upload', 'published-dates')
       } catch (error) {
         setError(
           'data-upload',
@@ -142,10 +108,10 @@ export function useContentAuditSOP() {
     [completeStep, setLoading, clearError, setError],
   )
 
-  const handleAnalysisConfig = useCallback(
+  const handlePublishedDateConfig = useCallback(
     async (config: AnalysisConfig) => {
-      setLoading('analysis-config', true)
-      clearError('analysis-config')
+      setLoading('published-dates', true)
+      clearError('published-dates')
 
       try {
         setState((prev) => ({
@@ -153,101 +119,96 @@ export function useContentAuditSOP() {
           analysisConfig: config,
         }))
 
-        completeStep('analysis-config', 'run-analysis')
-      } catch (error) {
-        setError(
-          'analysis-config',
-          error instanceof Error
-            ? error.message
-            : 'Failed to configure analysis',
-        )
-      } finally {
-        setLoading('analysis-config', false)
-      }
-    },
-    [completeStep, setLoading, clearError, setError],
-  )
+        // If published dates are enabled, fetch them now
+        if (config.includePublishedDates && state.uploadedPages) {
+          // Set up progress callback
+          const onProgress = (progress: PublishedDateProgress) => {
+            setState((prev) => ({
+              ...prev,
+              publishedDateProgress: progress,
+            }))
+          }
 
-  const handleRunAnalysis = useCallback(async () => {
-    if (!state.uploadedPages || !state.analysisConfig) return
+          const enrichedPages = await enrichWithPublishedDates(
+            state.uploadedPages,
+            undefined, // No cache for demo
+            config.publishedDateDelay,
+            onProgress,
+          )
 
-    setLoading('run-analysis', true)
-    clearError('run-analysis')
+          // Keep the final progress state visible for a moment before clearing
+          await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    try {
-      let pages = state.uploadedPages
-
-      // Enrich with published dates if requested
-      if (state.analysisConfig.includePublishedDates) {
-        // Set up progress callback
-        const onProgress = (progress: PublishedDateProgress) => {
           setState((prev) => ({
             ...prev,
-            publishedDateProgress: progress,
+            uploadedPages: enrichedPages,
+            publishedDateProgress: undefined,
           }))
         }
 
-        pages = await enrichWithPublishedDates(
-          pages,
-          undefined, // No cache for demo
-          state.analysisConfig.publishedDateDelay,
-          onProgress,
+        completeStep('published-dates', 'analysis')
+      } catch (error) {
+        setError(
+          'published-dates',
+          error instanceof Error
+            ? error.message
+            : 'Failed to fetch published dates',
         )
+      } finally {
+        setLoading('published-dates', false)
+      }
+    },
+    [completeStep, setLoading, clearError, setError, state.uploadedPages],
+  )
 
-        // Keep the final progress state visible for a moment before clearing
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+  const handleRunAnalysis = useCallback(
+    async (config: AnalysisConfig) => {
+      if (!state.uploadedPages) return
 
-        // Clear progress when done
+      setLoading('analysis', true)
+      clearError('analysis')
+
+      try {
+        // Update config first
         setState((prev) => ({
           ...prev,
-          publishedDateProgress: undefined,
+          analysisConfig: config,
         }))
+
+        // Generate content inventory
+        const contentInventory = ContentInventory.fromPageData(
+          state.uploadedPages,
+        )
+
+        // Generate time-based analysis
+        const timeBasedAnalysis = TimeBasedAnalysis.fromPageData(
+          state.uploadedPages,
+          config.strategy,
+        )
+
+        setState((prev) => ({
+          ...prev,
+          enrichedPages: state.uploadedPages,
+          contentInventory,
+          timeBasedAnalysis,
+        }))
+
+        completeStep('analysis')
+      } catch (error) {
+        setError(
+          'analysis',
+          error instanceof Error ? error.message : 'Failed to run analysis',
+        )
+      } finally {
+        setLoading('analysis', false)
       }
-
-      // Generate content inventory
-      const contentInventory = ContentInventory.fromPageData(pages)
-
-      // Generate time-based analysis
-      const timeBasedAnalysis = TimeBasedAnalysis.fromPageData(
-        pages,
-        state.analysisConfig.strategy,
-      )
-
-      setState((prev) => ({
-        ...prev,
-        enrichedPages: pages,
-        contentInventory,
-        timeBasedAnalysis,
-      }))
-
-      completeStep('run-analysis', 'results')
-    } catch (error) {
-      setError(
-        'run-analysis',
-        error instanceof Error ? error.message : 'Failed to run analysis',
-      )
-    } finally {
-      setLoading('run-analysis', false)
-    }
-  }, [
-    state.uploadedPages,
-    state.analysisConfig,
-    completeStep,
-    setLoading,
-    clearError,
-    setError,
-  ])
+    },
+    [state.uploadedPages, completeStep, setLoading, clearError, setError],
+  )
 
   // Progress tracker steps
   const progressSteps = useMemo(
     (): ProgressStep[] => [
-      {
-        id: 'project-setup',
-        title: 'Project Setup',
-        isCompleted: state.completedSteps.has('project-setup'),
-        isActive: state.currentStep === 'project-setup',
-        hasError: !!state.errors['project-setup'],
-      },
       {
         id: 'data-upload',
         title: 'Data Upload',
@@ -256,25 +217,18 @@ export function useContentAuditSOP() {
         hasError: !!state.errors['data-upload'],
       },
       {
-        id: 'analysis-config',
-        title: 'Analysis Config',
-        isCompleted: state.completedSteps.has('analysis-config'),
-        isActive: state.currentStep === 'analysis-config',
-        hasError: !!state.errors['analysis-config'],
+        id: 'published-dates',
+        title: 'Published Dates',
+        isCompleted: state.completedSteps.has('published-dates'),
+        isActive: state.currentStep === 'published-dates',
+        hasError: !!state.errors['published-dates'],
       },
       {
-        id: 'run-analysis',
-        title: 'Run Analysis',
-        isCompleted: state.completedSteps.has('run-analysis'),
-        isActive: state.currentStep === 'run-analysis',
-        hasError: !!state.errors['run-analysis'],
-      },
-      {
-        id: 'results',
-        title: 'Results',
-        isCompleted: state.completedSteps.has('results'),
-        isActive: state.currentStep === 'results',
-        hasError: !!state.errors['results'],
+        id: 'analysis',
+        title: 'Analysis & Results',
+        isCompleted: state.completedSteps.has('analysis'),
+        isActive: state.currentStep === 'analysis',
+        hasError: !!state.errors['analysis'],
       },
     ],
     [state.completedSteps, state.currentStep, state.errors],
@@ -293,9 +247,8 @@ export function useContentAuditSOP() {
     progressSteps,
 
     // Step handlers
-    handleProjectSetup,
     handleDataUpload,
-    handleAnalysisConfig,
+    handlePublishedDateConfig,
     handleRunAnalysis,
 
     // Utilities

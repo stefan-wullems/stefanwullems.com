@@ -2,13 +2,7 @@
 
 import { useContentAuditSOPContext } from './ContentAuditSOPContext'
 import { SOPProgressTracker } from './SOPProgressTracker'
-import {
-  ProjectSetupStep,
-  DataUploadStep,
-  AnalysisConfigStep,
-  RunAnalysisStep,
-  ResultsStep,
-} from './steps'
+import { DataUploadStep, PublishedDateStep, AnalysisStep } from './steps'
 
 interface ContentAuditWorkflowProps {
   showProgressTracker?: boolean
@@ -28,19 +22,15 @@ export function ContentAuditWorkflow({
       <div className="space-y-8">
         {showAllSteps ? (
           <>
-            <ProjectSetupStep />
             <DataUploadStep />
-            <AnalysisConfigStep />
-            <RunAnalysisStep />
-            <ResultsStep />
+            <PublishedDateStep />
+            <AnalysisStep />
           </>
         ) : (
           <>
-            {sop.isStepActive('project-setup') && <ProjectSetupStep />}
             {sop.isStepActive('data-upload') && <DataUploadStep />}
-            {sop.isStepActive('analysis-config') && <AnalysisConfigStep />}
-            {sop.isStepActive('run-analysis') && <RunAnalysisStep />}
-            {sop.isStepActive('results') && <ResultsStep />}
+            {sop.isStepActive('published-dates') && <PublishedDateStep />}
+            {sop.isStepActive('analysis') && <AnalysisStep />}
           </>
         )}
       </div>
@@ -49,24 +39,16 @@ export function ContentAuditWorkflow({
 }
 
 // Individual step components for use in MDX
-export function ProjectSetupStepWrapper() {
-  return <ProjectSetupStep />
-}
-
 export function DataUploadStepWrapper() {
   return <DataUploadStep />
 }
 
-export function AnalysisConfigStepWrapper() {
-  return <AnalysisConfigStep />
+export function PublishedDateStepWrapper() {
+  return <PublishedDateStep />
 }
 
-export function RunAnalysisStepWrapper() {
-  return <RunAnalysisStep />
-}
-
-export function ResultsStepWrapper() {
-  return <ResultsStep />
+export function AnalysisStepWrapper() {
+  return <AnalysisStep />
 }
 
 export function ProgressTrackerWrapper() {
