@@ -5,7 +5,7 @@ export type SortDirection = 'asc' | 'desc'
 
 export type Column<T> = {
   /** Unique key for the column. If no accessor/value, this reads the field from the row. */
-  key: keyof T | string
+  key: keyof T
   /** Header content */
   header: React.ReactNode
   /** Custom cell renderer (receives the row) */

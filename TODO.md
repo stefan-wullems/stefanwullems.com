@@ -1,7 +1,7 @@
 - MVP: Content rules for sop/LLM-instructions.md
-- MVP: Display content inventory as a table again (use one from tailwindplus)
 - MVP: Display time based analysis as a table again (use one from tailwindplus)
 
+- Separate time based analysis into a separate component
 - domain/LLM-instructions.md
 - Use a csv parsing library rather than reinventing the wheel.
 - Google analytics with custom events related to sop completion
