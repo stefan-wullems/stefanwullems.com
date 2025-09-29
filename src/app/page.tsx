@@ -122,9 +122,9 @@ export default async function Home() {
               <Sop key={sop.slug} sop={sop} />
             ))}
           </div>
-          <div className="space-y-10 lg:pl-16 xl:pl-24">
+          {/*<div className="space-y-10 lg:pl-16 xl:pl-24">
             <Newsletter />
-          </div>
+          </div>*/}
         </div>
       </Container>
     </>
