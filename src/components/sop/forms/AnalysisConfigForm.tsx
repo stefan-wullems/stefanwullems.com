@@ -83,7 +83,7 @@ export function AnalysisConfigForm({
                   onChange={(e) =>
                     setStrategy(e.target.value as AnalysisStrategy)
                   }
-                  className="mt-1 h-4 w-4 border-zinc-300 text-amber-600 focus:ring-amber-500 dark:border-zinc-600 dark:text-amber-400"
+                  className="mt-1 h-4 w-4 border-zinc-300 text-teal-600 focus:ring-teal-500 dark:border-zinc-600 dark:text-teal-400"
                   disabled={isLoading}
                 />
                 <div className="ml-3">
@@ -110,7 +110,7 @@ export function AnalysisConfigForm({
                   onChange={(e) =>
                     setStrategy(e.target.value as AnalysisStrategy)
                   }
-                  className="mt-1 h-4 w-4 border-zinc-300 text-amber-600 focus:ring-amber-500 dark:border-zinc-600 dark:text-amber-400"
+                  className="mt-1 h-4 w-4 border-zinc-300 text-teal-600 focus:ring-teal-500 dark:border-zinc-600 dark:text-teal-400"
                   disabled={isLoading}
                 />
                 <div className="ml-3">
@@ -138,7 +138,7 @@ export function AnalysisConfigForm({
                 type="checkbox"
                 checked={includePublishedDates}
                 onChange={(e) => setIncludePublishedDates(e.target.checked)}
-                className="h-4 w-4 rounded border-zinc-300 text-amber-600 focus:ring-amber-500 dark:border-zinc-600 dark:text-amber-400"
+                className="h-4 w-4 rounded border-zinc-300 text-teal-600 focus:ring-teal-500 dark:border-zinc-600 dark:text-teal-400"
                 disabled={isLoading}
               />
               <label
@@ -169,7 +169,7 @@ export function AnalysisConfigForm({
                     onChange={(e) =>
                       setPublishedDateDelay(Number(e.target.value))
                     }
-                    className="w-full rounded-md border border-zinc-300 px-3 py-2 shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+                    className="w-full rounded-md border border-zinc-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
                     disabled={isLoading}
                   >
                     <option value={250}>250ms (Fast, may be blocked)</option>
@@ -183,10 +183,10 @@ export function AnalysisConfigForm({
                   </p>
                 </div>
 
-                <div className="rounded-md border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-900/20">
+                <div className="rounded-md border border-teal-200 bg-teal-50 p-3 dark:border-teal-800 dark:bg-teal-900/20">
                   <div className="flex items-center">
                     <svg
-                      className="mr-2 h-5 w-5 text-amber-600 dark:text-amber-400"
+                      className="mr-2 h-5 w-5 text-teal-600 dark:text-teal-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -199,11 +199,11 @@ export function AnalysisConfigForm({
                       />
                     </svg>
                     <div>
-                      <p className="text-sm text-amber-800 dark:text-amber-200">
+                      <p className="text-sm text-teal-800 dark:text-teal-200">
                         <strong>Estimated Processing Time:</strong>{' '}
                         {estimateTime()}
                       </p>
-                      <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+                      <p className="mt-1 text-xs text-teal-600 dark:text-teal-400">
                         Processing {pageCount} pages with {publishedDateDelay}ms
                         delay
                       </p>
@@ -248,7 +248,7 @@ export function AnalysisConfigForm({
               className={`rounded-md px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:outline-none ${
                 isLoading
                   ? 'cursor-not-allowed bg-zinc-300 text-zinc-500 dark:bg-zinc-600 dark:text-zinc-400'
-                  : 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-amber-500 dark:bg-amber-600 dark:hover:bg-amber-700'
+                  : 'bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500 dark:bg-teal-600 dark:hover:bg-teal-700'
               }`}
             >
               {isLoading ? 'Configuring...' : 'Start Analysis'}

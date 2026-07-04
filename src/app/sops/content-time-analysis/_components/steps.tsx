@@ -102,7 +102,7 @@ export function TimeAnalysisStep() {
                 onChange={(e) =>
                   setStrategy(e.target.value as 'median' | 'average')
                 }
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+                className="w-full rounded-md border border-zinc-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
               >
                 <option value="average">
                   Average (Recommended) - Traditional mathematical mean
@@ -122,7 +122,7 @@ export function TimeAnalysisStep() {
               className={`w-full rounded-md px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:outline-none ${
                 sop.isStepLoading('analysis') || !sop.state.uploadedPages
                   ? 'cursor-not-allowed bg-zinc-300 text-zinc-500 dark:bg-zinc-600 dark:text-zinc-400'
-                  : 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-amber-500 dark:bg-amber-600 dark:hover:bg-amber-700'
+                  : 'bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500 dark:bg-teal-600 dark:hover:bg-teal-700'
               }`}
             >
               {sop.isStepLoading('analysis')

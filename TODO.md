@@ -1,3 +1,5 @@
+- Next: Google tag manager course and implementation
+
 - Fix RD per visit things for content inventory
 - Add weights to content inventory, and add different scoring strategies
 - Separate time based analysis into a separate component
@@ -12,7 +14,6 @@
 - Calculate ROAS from google analytics and google ads
 - Calculate expected revenue from SEO (Kevin's business case)
 - Generate a google ad from a landing page
-- Copywriting Dossier: https://docs.google.com/spreadsheets/d/1bRn6NjV4Lq-6jlR5Ac24fzZgwOKQwhgoNcKxJ_sw3iI/edit?gid=2113483350#gid=2113483350
 
 
 ## Content ideas

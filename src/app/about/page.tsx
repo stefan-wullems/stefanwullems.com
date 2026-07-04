@@ -4,13 +4,8 @@ import Link from 'next/link'
 import clsx from 'clsx'
 
 import { Container } from '@/components/Container'
-import {
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  XIcon,
-} from '@/components/SocialIcons'
-import portraitImage from '@/images/portrait.jpg'
+import { GitHubIcon, LinkedInIcon } from '@/components/SocialIcons'
+import portraitImage from '@/images/linkedin-portrait.jpeg'
 
 function SocialLink({
   className,
@@ -27,9 +22,9 @@ function SocialLink({
     <li className={clsx(className, 'flex')}>
       <Link
         href={href}
-        className="group flex text-sm font-medium text-zinc-800 transition hover:text-amber-500 dark:text-zinc-200 dark:hover:text-amber-500"
+        className="group flex font-mono text-sm text-zinc-300 transition hover:text-teal-300"
       >
-        <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-amber-500" />
+        <Icon className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-teal-300" />
         <span className="ml-4">{children}</span>
       </Link>
     </li>
@@ -50,7 +45,7 @@ function MailIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 export const metadata: Metadata = {
   title: 'About',
   description:
-    "I’m Stefan Wullems. Digital marketer with an engineer's mindset",
+    'I’m Stefan Wullems, a web developer who took the scenic route and came back building with AI.',
 }
 
 export default function About() {
@@ -63,50 +58,62 @@ export default function About() {
               src={portraitImage}
               alt=""
               sizes="(min-width: 1024px) 32rem, 20rem"
-              className="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
+              className="aspect-square rotate-3 rounded-2xl bg-zinc-800 object-cover"
             />
           </div>
         </div>
         <div className="lg:order-first lg:row-span-2">
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
-            I’m Stefan Wullems. Digital marketer with an engineer's mindset
+          <h1 className="font-display text-4xl font-semibold tracking-tight text-zinc-100 sm:text-5xl">
+            I’m Stefan. I build things, usually the long way around.
           </h1>
-          <div className="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-400">
+          <div className="mt-6 space-y-7 text-base text-zinc-400">
             <p>
-              I started programming at 18 when my cousin and I finally started
+              I started programming at 18 when my cousin and I finally began
               working on the game we had been imagining for months. He did
               design and art, and I had to learn how to code. Brimming with
               confidence from making a sphere move in certain ways, I started
-              applying for software jobs when a kind recruiter referred me to a
-              web development bootcamp. Ten weeks of hard and exciting work
-              launched me into a career that led me to work all across Europe
-              for companies ranging from small startups to rapidly growing
-              unicorns.
+              applying for software jobs, until a kind recruiter pointed me at
+              a web development bootcamp instead. Ten weeks of hard, exciting
+              work launched me into a career that took me across Europe, from
+              small startups to rapidly growing unicorns.
             </p>
             <p>
-              In just a couple of years I found myself in places I couldn't have
-              imagined at the outset, but couldn't help feeling like I had lost
-              something along the way. I wanted a reset, to explore those things
-              I had written off as "not in this lifetime". I stepped outside of
-              tech, launched a tiny coaching practice and started going to
-              university to study Psychology in the evenings.
+              I gravitated to the strange corners of the industry: Elm,
+              Haskell, Rust, event sourcing, domain-driven design. The kinds
+              of teams that argue about type systems over lunch. I refactored a
+              hundred-thousand-line codebase, built a UI library from scratch,
+              and led the automation of an insurance process I couldn’t
+              pronounce at first. I loved the craft. But a few years in, I
+              couldn’t shake the feeling I had lost something along the way.
             </p>
             <p>
-              Today, I am at the start of a career change towards digital
-              marketing. This field has it all. It allows me to do everything I
-              love: analyze, learn, write code, strategize, and at the same
-              time: understand and connect to people. It captivates with game
-              changing trends like AI that are reshaping the field and it has
-              lots of deep, interesting and stackable skills to master. I may be
-              back at the bottom of the mountain, but I found the right mountain
-              allright.
+              So I stepped out. I started a tiny coaching practice, earned a
+              propedeuse in Psychology at the Open Universiteit, followed a
+              marketing traineeship, built an event sourcing library for fun,
+              and painted houses to pay the bills. The detour taught me more
+              about people, myself included, than any framework ever did.
+            </p>
+            <p>
+              Now I’m back to building, with new eyes. I work at the
+              intersection of web development and AI automation: designing
+              workflows where AI does real work: generating content, resolving
+              technical issues, giving non-technical teams superpowers they
+              could only borrow from engineers before. The tools have changed
+              more in the last two years than in my first ten, and I find that
+              genuinely thrilling.
             </p>
           </div>
         </div>
         <div className="lg:pl-20">
           <ul role="list">
             <SocialLink
-              href="https://www.linkedin.com/in/stefanwullems/"
+              href="https://github.com/stefan-wullems"
+              icon={GitHubIcon}
+            >
+              Follow on GitHub
+            </SocialLink>
+            <SocialLink
+              href="https://www.linkedin.com/in/stefan-wullems-572854242/"
               icon={LinkedInIcon}
               className="mt-4"
             >
@@ -115,7 +122,7 @@ export default function About() {
             <SocialLink
               href="mailto:stefanwullems1998@gmail.com"
               icon={MailIcon}
-              className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
+              className="mt-8 border-t border-white/5 pt-8"
             >
               stefanwullems1998@gmail.com
             </SocialLink>

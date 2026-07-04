@@ -143,9 +143,9 @@ export function DataUploadForm({
       <div
         className={`rounded-lg border-2 border-dashed p-6 text-center transition-colors ${
           isDragOver
-            ? 'border-amber-400 bg-amber-50 dark:border-amber-500 dark:bg-amber-900/20'
+            ? 'border-teal-400 bg-teal-50 dark:border-teal-500 dark:bg-teal-900/20'
             : uploadedFile
-              ? 'border-amber-400 bg-amber-50 dark:border-amber-500 dark:bg-amber-900/20'
+              ? 'border-teal-400 bg-teal-50 dark:border-teal-500 dark:bg-teal-900/20'
               : 'border-zinc-300 hover:border-zinc-400 dark:border-zinc-600 dark:hover:border-zinc-500'
         }`}
         onDragOver={handleDragOver}
@@ -163,7 +163,7 @@ export function DataUploadForm({
 
         {isProcessing ? (
           <div className="space-y-2">
-            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-amber-600 dark:border-amber-400"></div>
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-teal-600 dark:border-teal-400"></div>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
               Processing CSV file...
             </p>
@@ -171,7 +171,7 @@ export function DataUploadForm({
         ) : uploadedFile ? (
           <div className="space-y-2">
             <svg
-              className="mx-auto h-8 w-8 text-amber-600 dark:text-amber-400"
+              className="mx-auto h-8 w-8 text-teal-600 dark:text-teal-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -187,7 +187,7 @@ export function DataUploadForm({
               <strong>{uploadedFile.name}</strong> (
               {(uploadedFile.size / 1024).toFixed(1)} KB)
             </p>
-            <p className="text-xs text-amber-600 dark:text-amber-400">
+            <p className="text-xs text-teal-600 dark:text-teal-400">
               Found{' '}
               {previewData.length > 0
                 ? `${previewData.length}+ pages`
@@ -219,7 +219,7 @@ export function DataUploadForm({
               Drop your CSV file here, or{' '}
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="text-amber-600 underline hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300"
+                className="text-teal-600 underline hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
               >
                 browse to upload
               </button>

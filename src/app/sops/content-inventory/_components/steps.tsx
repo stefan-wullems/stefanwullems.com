@@ -49,7 +49,7 @@ export function ContentInventoryAnalysisStep() {
           <button
             onClick={() => sop.handleRunAnalysis()}
             disabled={!sop.isStepActive('analysis')}
-            className="not:disabled:hover:bg-zinc-50 not:disabled:dark:hover:bg-zinc-700 w-full rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 focus:ring-2 focus:ring-amber-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+            className="not:disabled:hover:bg-zinc-50 not:disabled:dark:hover:bg-zinc-700 w-full rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 focus:ring-2 focus:ring-teal-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
           >
             Run Analysis
           </button>

@@ -33,14 +33,14 @@ export function SOPStep({
     }
     if (isCompleted) {
       return (
-        <CheckIcon className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+        <CheckIcon className="h-5 w-5 text-teal-600 dark:text-teal-400" />
       )
     }
     return (
       <span
         className={`flex h-5 w-5 items-center justify-center rounded-full text-sm font-medium ${
           isActive
-            ? 'bg-amber-500 text-white dark:bg-amber-600 dark:text-white'
+            ? 'bg-teal-500 text-white dark:bg-teal-600 dark:text-white'
             : 'bg-zinc-300 text-zinc-500 dark:bg-zinc-600 dark:text-zinc-400'
         }`}
       >

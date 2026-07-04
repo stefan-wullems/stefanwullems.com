@@ -54,7 +54,7 @@ export function PublishedDateConfigForm({
               value={publishedDateDelay}
               onChange={(e) => setPublishedDateDelay(Number(e.target.value))}
               disabled={isLoading}
-              className="w-full rounded-md border border-zinc-300 px-3 py-2 shadow-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
             >
               <option value={200}>
                 200ms - Fast (may be blocked by some sites)
@@ -70,11 +70,11 @@ export function PublishedDateConfigForm({
             </p>
           </div>
 
-          <div className="rounded-md border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
-            <h4 className="mb-2 text-sm font-medium text-amber-800 dark:text-amber-200">
+          <div className="rounded-md border border-teal-200 bg-teal-50 p-4 dark:border-teal-800 dark:bg-teal-900/20">
+            <h4 className="mb-2 text-sm font-medium text-teal-800 dark:text-teal-200">
               Estimated Time
             </h4>
-            <p className="text-sm text-amber-700 dark:text-amber-300">
+            <p className="text-sm text-teal-700 dark:text-teal-300">
               With {publishedDateDelay}ms delay: approximately{' '}
               <strong>
                 {Math.ceil((pageCount * publishedDateDelay) / 60000)} minutes
@@ -90,14 +90,14 @@ export function PublishedDateConfigForm({
           {progress ? (
             <PublishedDateProgressBar progress={progress} />
           ) : (
-            <div className="rounded-md border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
+            <div className="rounded-md border border-teal-200 bg-teal-50 p-4 dark:border-teal-800 dark:bg-teal-900/20">
               <div className="flex items-center space-x-3">
-                <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-amber-600 dark:border-amber-400"></div>
+                <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-teal-600 dark:border-teal-400"></div>
                 <div>
-                  <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                  <p className="text-sm font-medium text-teal-800 dark:text-teal-200">
                     Preparing to fetch published dates...
                   </p>
-                  <p className="text-sm text-amber-700 dark:text-amber-300">
+                  <p className="text-sm text-teal-700 dark:text-teal-300">
                     Initializing published date fetching process.
                   </p>
                 </div>
@@ -114,7 +114,7 @@ export function PublishedDateConfigForm({
           className={`rounded-md px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:outline-none ${
             isLoading
               ? 'cursor-not-allowed bg-zinc-300 text-zinc-500 dark:bg-zinc-600 dark:text-zinc-400'
-              : 'bg-amber-600 text-white hover:bg-amber-700 focus:ring-amber-500 dark:bg-amber-600 dark:hover:bg-amber-700'
+              : 'bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500 dark:bg-teal-600 dark:hover:bg-teal-700'
           }`}
         >
           {isLoading ? 'Fetching Published Dates...' : 'Fetch Published Dates'}

@@ -94,7 +94,7 @@ export function ResultsTable({
 
     return sortDirection === 'asc' ? (
       <svg
-        className="h-4 w-4 text-amber-600 dark:text-amber-400"
+        className="h-4 w-4 text-teal-600 dark:text-teal-400"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -108,7 +108,7 @@ export function ResultsTable({
       </svg>
     ) : (
       <svg
-        className="h-4 w-4 text-amber-600 dark:text-amber-400"
+        className="h-4 w-4 text-teal-600 dark:text-teal-400"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -198,7 +198,7 @@ export function ResultsTable({
         <tbody className="divide-y divide-zinc-200 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
           {paginatedData.map((item, index) => (
             <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-800">
-              <td className="max-w-xs px-6 py-4 text-xs text-amber-600 dark:text-amber-400">
+              <td className="max-w-xs px-6 py-4 text-xs text-teal-600 dark:text-teal-400">
                 <a
                   href={item.url}
                   target="_blank"
@@ -220,7 +220,7 @@ export function ResultsTable({
                 <span
                   className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${
                     (item as ContentInventoryItem).compositeScore >= 7
-                      ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
+                      ? 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300'
                       : (item as ContentInventoryItem).compositeScore >= 5
                         ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
                         : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
@@ -234,7 +234,7 @@ export function ResultsTable({
                 <span
                   className={`ml-1 text-xs ${
                     (item as ContentInventoryItem).rdQuartile === 4
-                      ? 'text-amber-600 dark:text-amber-400'
+                      ? 'text-teal-600 dark:text-teal-400'
                       : (item as ContentInventoryItem).rdQuartile === 3
                         ? 'text-yellow-600 dark:text-yellow-400'
                         : (item as ContentInventoryItem).rdQuartile === 2
@@ -250,7 +250,7 @@ export function ResultsTable({
                 <span
                   className={`ml-1 text-xs ${
                     (item as ContentInventoryItem).trafficQuartile === 4
-                      ? 'text-amber-600 dark:text-amber-400'
+                      ? 'text-teal-600 dark:text-teal-400'
                       : (item as ContentInventoryItem).trafficQuartile === 3
                         ? 'text-yellow-600 dark:text-yellow-400'
                         : (item as ContentInventoryItem).trafficQuartile === 2
@@ -344,7 +344,7 @@ export function ResultsTable({
         <tbody className="divide-y divide-zinc-200 bg-white dark:divide-zinc-700 dark:bg-zinc-800">
           {paginatedData.map((item, index) => (
             <tr key={index} className="hover:bg-zinc-50 dark:hover:bg-zinc-800">
-              <td className="max-w-xs px-6 py-4 text-xs text-amber-600 dark:text-amber-400">
+              <td className="max-w-xs px-6 py-4 text-xs text-teal-600 dark:text-teal-400">
                 <a
                   href={item.url}
                   target="_blank"
@@ -369,7 +369,7 @@ export function ResultsTable({
                 <span
                   className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
                     (item as TimeBasedAnalysisItem).timeBasedIndex >= 1.5
-                      ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
+                      ? 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300'
                       : (item as TimeBasedAnalysisItem).timeBasedIndex >= 1.0
                         ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
                         : (item as TimeBasedAnalysisItem).timeBasedIndex >= 0.5
@@ -468,7 +468,7 @@ export function ResultsTable({
                   onClick={() => setCurrentPage(pageNumber)}
                   className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                     pageNumber === currentPage
-                      ? 'z-10 bg-amber-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 dark:bg-amber-600'
+                      ? 'z-10 bg-teal-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:bg-teal-600'
                       : 'text-zinc-900 ring-1 ring-zinc-300 ring-inset hover:bg-zinc-50 focus:z-20 focus:outline-offset-0 dark:text-zinc-100 dark:ring-zinc-600 dark:hover:bg-zinc-800'
                   }`}
                 >
@@ -545,7 +545,7 @@ export function ResultsTable({
         </div>
         <button
           onClick={handleExportCsv}
-          className="inline-flex items-center rounded-md border border-transparent bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:outline-none dark:bg-amber-600 dark:hover:bg-amber-700"
+          className="inline-flex items-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:outline-none dark:bg-teal-600 dark:hover:bg-teal-700"
         >
           <svg
             className="mr-2 h-4 w-4"

@@ -242,7 +242,7 @@ export function Table<T>({
             </div>
           )}
 
-          <div className="overflow-scroll border border-amber-500">
+          <div className="overflow-scroll border border-teal-500">
             <table className="min-w-full divide-y divide-zinc-300 dark:divide-white/15">
               <thead>
                 <tr>
@@ -253,7 +253,7 @@ export function Table<T>({
                       <th
                         key={k}
                         scope="col"
-                        className="bg-amber-500 px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-white"
+                        className="bg-teal-500 px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-white"
                       >
                         {col.sortable ? (
                           <button

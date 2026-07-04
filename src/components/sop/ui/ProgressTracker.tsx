@@ -64,9 +64,9 @@ export function ProgressTracker({
             />
           </svg>
         ),
-        bgColor: 'bg-amber-500 dark:bg-amber-600',
-        textColor: 'text-amber-600 dark:text-amber-400',
-        borderColor: 'border-amber-200 dark:border-amber-800',
+        bgColor: 'bg-teal-500 dark:bg-teal-600',
+        textColor: 'text-teal-600 dark:text-teal-400',
+        borderColor: 'border-teal-200 dark:border-teal-800',
       }
     }
 
@@ -75,9 +75,9 @@ export function ProgressTracker({
         icon: (
           <span className="text-sm font-medium text-white">{index + 1}</span>
         ),
-        bgColor: 'bg-amber-500 dark:bg-amber-600',
-        textColor: 'text-amber-600 dark:text-amber-400',
-        borderColor: 'border-amber-200 dark:border-amber-800',
+        bgColor: 'bg-teal-500 dark:bg-teal-600',
+        textColor: 'text-teal-600 dark:text-teal-400',
+        borderColor: 'border-teal-200 dark:border-teal-800',
       }
     }
 
@@ -112,7 +112,7 @@ export function ProgressTracker({
             className={`h-2.5 rounded-full transition-all duration-300 ${
               progressStats.hasErrors
                 ? 'bg-red-500 dark:bg-red-600'
-                : 'bg-amber-500 dark:bg-amber-600'
+                : 'bg-teal-500 dark:bg-teal-600'
             }`}
             style={{ width: `${progressStats.percentage}%` }}
           />
@@ -144,7 +144,7 @@ export function ProgressTracker({
                       className={`absolute top-8 left-4 h-6 w-px ${
                         steps[index + 1]?.isCompleted ||
                         steps[index + 1]?.isActive
-                          ? 'bg-amber-300 dark:bg-amber-600'
+                          ? 'bg-teal-300 dark:bg-teal-600'
                           : 'bg-zinc-300 dark:bg-zinc-600'
                       }`}
                     />
@@ -156,9 +156,9 @@ export function ProgressTracker({
                     <p
                       className={`text-sm font-medium ${
                         step.id === currentStepId
-                          ? 'text-amber-600 dark:text-amber-400'
+                          ? 'text-teal-600 dark:text-teal-400'
                           : step.isCompleted
-                            ? 'text-amber-600 dark:text-amber-400'
+                            ? 'text-teal-600 dark:text-teal-400'
                             : step.hasError
                               ? 'text-red-600 dark:text-red-400'
                               : 'text-zinc-900 dark:text-zinc-100'
@@ -205,10 +205,10 @@ export function ProgressTracker({
       )}
 
       {progressStats.percentage === 100 && !progressStats.hasErrors && (
-        <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-900/20">
+        <div className="mt-6 rounded-md border border-teal-200 bg-teal-50 p-3 dark:border-teal-800 dark:bg-teal-900/20">
           <div className="flex">
             <svg
-              className="h-5 w-5 text-amber-400 dark:text-amber-300"
+              className="h-5 w-5 text-teal-400 dark:text-teal-300"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -219,7 +219,7 @@ export function ProgressTracker({
               />
             </svg>
             <div className="ml-3">
-              <p className="text-sm text-amber-800 dark:text-amber-200">
+              <p className="text-sm text-teal-800 dark:text-teal-200">
                 🎉 Content audit completed successfully! Your analysis is ready.
               </p>
             </div>

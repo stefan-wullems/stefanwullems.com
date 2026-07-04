@@ -57,16 +57,16 @@ export function PublishedDateProgressBar({
     <div
       className={`space-y-4 rounded-lg border p-4 ${
         isCompleted
-          ? 'border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20'
-          : 'border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20'
+          ? 'border-teal-200 bg-teal-50 dark:border-teal-800 dark:bg-teal-900/20'
+          : 'border-teal-200 bg-teal-50 dark:border-teal-800 dark:bg-teal-900/20'
       }`}
     >
       <div className="flex items-center justify-between">
         <h4
           className={`text-sm font-medium ${
             isCompleted
-              ? 'text-amber-800 dark:text-amber-200'
-              : 'text-amber-800 dark:text-amber-200'
+              ? 'text-teal-800 dark:text-teal-200'
+              : 'text-teal-800 dark:text-teal-200'
           }`}
         >
           {isCompleted ? 'Published Dates Fetched' : 'Fetching Published Dates'}
@@ -74,8 +74,8 @@ export function PublishedDateProgressBar({
         <span
           className={`text-sm font-medium ${
             isCompleted
-              ? 'text-amber-700 dark:text-amber-300'
-              : 'text-amber-700 dark:text-amber-300'
+              ? 'text-teal-700 dark:text-teal-300'
+              : 'text-teal-700 dark:text-teal-300'
           }`}
         >
           {completed} / {total}
@@ -86,15 +86,15 @@ export function PublishedDateProgressBar({
       <div
         className={`h-3 w-full overflow-hidden rounded-full ${
           isCompleted
-            ? 'bg-amber-200 dark:bg-amber-800'
-            : 'bg-amber-200 dark:bg-amber-800'
+            ? 'bg-teal-200 dark:bg-teal-800'
+            : 'bg-teal-200 dark:bg-teal-800'
         }`}
       >
         <div
           className={`h-3 rounded-full transition-all duration-300 ease-out ${
             isCompleted
-              ? 'bg-amber-600 dark:bg-amber-400'
-              : 'bg-amber-600 dark:bg-amber-400'
+              ? 'bg-teal-600 dark:bg-teal-400'
+              : 'bg-teal-600 dark:bg-teal-400'
           }`}
           style={{ width: `${progressPercentage}%` }}
         />
@@ -106,14 +106,14 @@ export function PublishedDateProgressBar({
           <div
             className={`font-medium ${
               isCompleted
-                ? 'text-amber-600 dark:text-amber-400'
-                : 'text-amber-600 dark:text-amber-400'
+                ? 'text-teal-600 dark:text-teal-400'
+                : 'text-teal-600 dark:text-teal-400'
             }`}
           >
             Progress
           </div>
           <div
-            className={`${isCompleted ? 'text-amber-800 dark:text-amber-200' : 'text-amber-800 dark:text-amber-200'}`}
+            className={`${isCompleted ? 'text-teal-800 dark:text-teal-200' : 'text-teal-800 dark:text-teal-200'}`}
           >
             {progressPercentage.toFixed(1)}% complete
           </div>
@@ -123,14 +123,14 @@ export function PublishedDateProgressBar({
           <div
             className={`font-medium ${
               isCompleted
-                ? 'text-amber-600 dark:text-amber-400'
-                : 'text-amber-600 dark:text-amber-400'
+                ? 'text-teal-600 dark:text-teal-400'
+                : 'text-teal-600 dark:text-teal-400'
             }`}
           >
             Rate
           </div>
           <div
-            className={`${isCompleted ? 'text-amber-800 dark:text-amber-200' : 'text-amber-800 dark:text-amber-200'}`}
+            className={`${isCompleted ? 'text-teal-800 dark:text-teal-200' : 'text-teal-800 dark:text-teal-200'}`}
           >
             {formatRate(rate)}
           </div>
@@ -140,14 +140,14 @@ export function PublishedDateProgressBar({
           <div
             className={`font-medium ${
               isCompleted
-                ? 'text-amber-600 dark:text-amber-400'
-                : 'text-amber-600 dark:text-amber-400'
+                ? 'text-teal-600 dark:text-teal-400'
+                : 'text-teal-600 dark:text-teal-400'
             }`}
           >
             {isCompleted ? 'Total Time' : 'Time Remaining'}
           </div>
           <div
-            className={`${isCompleted ? 'text-amber-800 dark:text-amber-200' : 'text-amber-800 dark:text-amber-200'}`}
+            className={`${isCompleted ? 'text-teal-800 dark:text-teal-200' : 'text-teal-800 dark:text-teal-200'}`}
           >
             {isCompleted
               ? formatTime(elapsedTime)
@@ -162,22 +162,22 @@ export function PublishedDateProgressBar({
       <div
         className={`space-y-2 border-t pt-2 ${
           isCompleted
-            ? 'border-amber-200 dark:border-amber-800'
-            : 'border-amber-200 dark:border-amber-800'
+            ? 'border-teal-200 dark:border-teal-800'
+            : 'border-teal-200 dark:border-teal-800'
         }`}
       >
         <div className="flex items-center justify-between text-xs">
           <span
             className={`font-medium ${
               isCompleted
-                ? 'text-amber-600 dark:text-amber-400'
-                : 'text-amber-600 dark:text-amber-400'
+                ? 'text-teal-600 dark:text-teal-400'
+                : 'text-teal-600 dark:text-teal-400'
             }`}
           >
             Elapsed Time:
           </span>
           <span
-            className={`${isCompleted ? 'text-amber-700 dark:text-amber-300' : 'text-amber-700 dark:text-amber-300'}`}
+            className={`${isCompleted ? 'text-teal-700 dark:text-teal-300' : 'text-teal-700 dark:text-teal-300'}`}
           >
             {formatTime(elapsedTime)}
           </span>
@@ -185,11 +185,11 @@ export function PublishedDateProgressBar({
 
         {!isCompleted && (
           <div className="space-y-1">
-            <div className="text-xs font-medium text-amber-600 dark:text-amber-400">
+            <div className="text-xs font-medium text-teal-600 dark:text-teal-400">
               Currently Processing:
             </div>
             <div
-              className="rounded border bg-white/50 px-2 py-1 font-mono text-xs text-amber-700 dark:border-amber-700 dark:bg-zinc-800/50 dark:text-amber-300"
+              className="rounded border bg-white/50 px-2 py-1 font-mono text-xs text-teal-700 dark:border-teal-700 dark:bg-zinc-800/50 dark:text-teal-300"
               title={currentUrl}
             >
               {truncateUrl(currentUrl)}
@@ -200,7 +200,7 @@ export function PublishedDateProgressBar({
         {isCompleted && (
           <div className="space-y-3">
             <div className="flex items-center space-x-2">
-              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 dark:bg-amber-600">
+              <div className="flex h-4 w-4 items-center justify-center rounded-full bg-teal-500 dark:bg-teal-600">
                 <svg
                   className="h-3 w-3 text-white"
                   fill="currentColor"
@@ -213,7 +213,7 @@ export function PublishedDateProgressBar({
                   />
                 </svg>
               </div>
-              <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
+              <span className="text-xs font-medium text-teal-700 dark:text-teal-300">
                 All published dates fetched successfully!
               </span>
             </div>
@@ -223,10 +223,10 @@ export function PublishedDateProgressBar({
               <div className="rounded bg-white/50 p-3 dark:bg-zinc-800/50">
                 <div className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
                   <div>
-                    <span className="font-medium text-amber-700 dark:text-amber-300">
+                    <span className="font-medium text-teal-700 dark:text-teal-300">
                       Success Rate:
                     </span>
-                    <div className="text-amber-800 dark:text-amber-200">
+                    <div className="text-teal-800 dark:text-teal-200">
                       Found published dates for{' '}
                       <strong>
                         {progress.summary.successRate.toFixed(1)}%
@@ -237,10 +237,10 @@ export function PublishedDateProgressBar({
 
                   {progress.summary.dateRange && (
                     <div>
-                      <span className="font-medium text-amber-700 dark:text-amber-300">
+                      <span className="font-medium text-teal-700 dark:text-teal-300">
                         Date Range:
                       </span>
-                      <div className="text-amber-800 dark:text-amber-200">
+                      <div className="text-teal-800 dark:text-teal-200">
                         Articles published between{' '}
                         <strong>{progress.summary.dateRange.earliest}</strong>{' '}
                         and <strong>{progress.summary.dateRange.latest}</strong>
@@ -250,7 +250,7 @@ export function PublishedDateProgressBar({
                 </div>
 
                 {progress.summary.failedCount > 0 && (
-                  <div className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+                  <div className="mt-2 text-xs text-teal-600 dark:text-teal-400">
                     Note: {progress.summary.failedCount} URLs could not be
                     processed
                   </div>
@@ -263,7 +263,7 @@ export function PublishedDateProgressBar({
 
       {/* Helpful Information */}
       {!isCompleted && (
-        <div className="rounded bg-white/30 p-2 text-xs text-amber-600 dark:bg-zinc-800/30 dark:text-amber-400">
+        <div className="rounded bg-white/30 p-2 text-xs text-teal-600 dark:bg-zinc-800/30 dark:text-teal-400">
           <p className="mb-1">
             <strong>Why this takes time:</strong> We add delays between requests
             to be respectful to websites and avoid being blocked.

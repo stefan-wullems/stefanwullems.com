@@ -6,7 +6,28 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+::selection {
+  background-color: rgba(45, 212, 191, 0.25);
+}
+
 @theme {
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono:
+    var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --animate-hero-fade: hero-fade 1.6s ease-out both;
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   --text-xs: 0.8125rem;
   --text-xs--line-height: 1.5rem;
   --text-sm: 0.875rem;
