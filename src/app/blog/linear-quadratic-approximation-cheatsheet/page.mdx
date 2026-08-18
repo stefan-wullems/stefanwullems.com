@@ -1,14 +1,15 @@
 import { ArticleLayout } from '@/components/ArticleLayout'
-import { Explorer } from './_components/Explorer'
-import { PolynomialRecovery } from './_components/PolynomialRecovery'
-import { ComparisonTable } from './_components/ComparisonTable'
+import { TableOfContents } from './_components/TableOfContents'
+import { BestFit } from './_components/BestFit'
+import { Reconstruct } from './_components/Reconstruct'
+import { FunctionCard } from './_components/FunctionCard'
 
 export const article = {
     author: 'Stefan Wullems',
     tags: ['math', 'calculus'],
     date: '2026-08-18',
     title: 'Linear/Quadratic Approximation Cheatsheet',
-    description: 'The two formulas, the standard approximations near zero, the algebra rules for combining them, and interactive graphs and error tables to check any of it.',
+    description: 'Definitions and intuition for linear and quadratic approximation, a per-function reference near zero with values and graphs, and the rules for combining approximations.',
 }
 
 export const metadata = {
@@ -18,23 +19,58 @@ export const metadata = {
 
 export default (props) => <ArticleLayout article={article} {...props} />
 
-## The two formulas
+<TableOfContents />
+
+<h2 id="definitions" className="scroll-mt-24">1. Definitions</h2>
+
+<h3 id="linear-approximation" className="scroll-mt-24">1.1 Linear approximation</h3>
 
 $$
 f(x) \approx f(0) + f'(0)\,x
 $$
 
+Replace the curve with the straight line that matches it at $x=0$ in **height** and **slope**.
+
+<h4 id="slope-intuition" className="scroll-mt-24">1.1.1 Slope intuition</h4>
+
+A line through $(0, f(0))$ needs one more number: its slope. Pick the slope wrong and the line peels away from the curve immediately. Pick $f'(0)$ and it stays glued for as long as possible.
+
+<BestFit order="linear" />
+
+<h4 id="reconstructing-a-and-b" className="scroll-mt-24">1.1.2 Reconstructing a and b</h4>
+
+The other way to read the formula: linear approximation is a search for the best $a + bx$.
+
+Write $P(x) = a + bx$ and demand it agree with $f$ at $0$:
+
+$$
+\begin{aligned}
+P(0) &= a &&\Rightarrow\ a = f(0) \\
+P'(0) &= b &&\Rightarrow\ b = f'(0)
+\end{aligned}
+$$
+
+There is no choice left — matching height and slope *forces* both coefficients. So if you hand the formula something that already is a line, it must hand the same line back:
+
+<Reconstruct order="linear" />
+
+<h3 id="quadratic-approximation" className="scroll-mt-24">1.2 Quadratic approximation</h3>
+
 $$
 f(x) \approx f(0) + f'(0)\,x + \frac{f''(0)}{2}x^2
 $$
 
-Everything below is these two lines applied over and over.
+Same idea, one more term: match the curve at $x=0$ in **height**, **slope**, and **curvature**.
 
-## What you are actually doing
+<h4 id="parabola-intuition" className="scroll-mt-24">1.2.1 Parabola intuition</h4>
 
-Linear approximation is a search for the best $a + bx$. Quadratic approximation is a search for the best $a + bx + cx^2$. Nothing more.
+A line can only match height and slope; it is always straight while the curve bends. Adding an $x^2$ term lets the approximation bend too, and $f''(0)$ says how much.
 
-Demand that $P(x) = a + bx + cx^2$ agree with $f$ at $x=0$ in **value**, **slope**, and **curvature**:
+<BestFit order="quadratic" />
+
+<h4 id="reconstructing-a-b-and-c" className="scroll-mt-24">1.2.2 Reconstructing a, b and c</h4>
+
+Now the search is for the best $a + bx + cx^2$. Write $P(x) = a + bx + cx^2$:
 
 $$
 \begin{aligned}
@@ -44,54 +80,37 @@ P''(0) &= 2c &&\Rightarrow\ c = \tfrac{1}{2}f''(0)
 \end{aligned}
 $$
 
-The coefficients are forced — there is no choice left. Drop $c$ and you have the linear case. The $\tfrac{1}{2}$ in the quadratic formula is there purely because $P''(0)$ comes out as $2c$, not $c$.
+That $\tfrac{1}{2}$ is not a fudge factor — it is there because $P''(0)$ comes out as $2c$ rather than $c$.
 
-### The sanity check
+<Reconstruct order="quadratic" />
 
-If linear approximation really is "find the best $a+bx$", then feeding it something that already *is* $a+bx$ must hand it straight back. Same for quadratic and $a+bx+cx^2$. Both do — the two panels below stay identical no matter how you move the sliders:
+Set $c=0$ and the quadratic formula collapses into the linear one. Linear approximation is the quadratic with curvature switched off, which is why a function with $f''(0)=0$ has the same linear and quadratic approximation.
 
-<PolynomialRecovery />
+<h2 id="cheatsheet" className="scroll-mt-24">2. Cheatsheet</h2>
 
-This is also why the two agree: run the quadratic formula on $a+bx$ (where $c=0$, so $f''(0)=0$) and the $x^2$ term vanishes, leaving exactly the linear result. Linear approximation is the quadratic one with the curvature term switched off.
+<h3 id="near-0" className="scroll-mt-24">2.1 Near 0</h3>
 
-## Cheatsheet near x = 0
+Each entry lists $f(0)$, $f'(0)$ and $f''(0)$, then both approximations, then the values against a direct calculation, then the graphs.
 
-| $f(x)$ | linear | quadratic |
-| --- | --- | --- |
-| $\sin x$ | $x$ | $x$ |
-| $\cos x$ | $1$ | $1 - \frac{x^2}{2}$ |
-| $\tan x$ | $x$ | $x$ |
-| $\sec x$ | $1$ | $1 + \frac{x^2}{2}$ |
-| $e^x$ | $1 + x$ | $1 + x + \frac{x^2}{2}$ |
-| $\ln(1+x)$ | $x$ | $x - \frac{x^2}{2}$ |
-| $(1+x)^r$ | $1 + rx$ | $1 + rx + \frac{r(r-1)}{2}x^2$ |
-| $a^x$ | $1 + x\ln a$ | $1 + x\ln a + \frac{(\ln a)^2}{2}x^2$ |
+<h4 id="trigonometric" className="scroll-mt-24">2.1.1 Trigonometric</h4>
 
-Worth memorising as a block: $\sin$ and $\tan$ both flatten to $x$, and their quadratic terms **vanish** (both are odd functions, so $f''(0)=0$). $\cos$ and $\sec$ both flatten to $1$ and differ only in the sign of the $x^2$ term.
+<FunctionCard fn="sin" />
+<FunctionCard fn="cos" />
+<FunctionCard fn="tan" />
+<FunctionCard fn="sec" />
+<FunctionCard fn="cot" />
+<FunctionCard fn="csc" />
 
-$\csc x$ and $\cot x$ have no approximation at $0$ at all — both divide by $\sin 0 = 0$, so there is no finite value to expand around.
+<h4 id="exponents-and-logarithms" className="scroll-mt-24">2.1.2 Exponents and logarithms</h4>
 
-Useful specialisations of $(1+x)^r$:
+<FunctionCard fn="exp" />
+<FunctionCard fn="ln" />
+<FunctionCard fn="pow" />
+<FunctionCard fn="apow" />
 
-| $r$ | $f(x)$ | linear | quadratic |
-| --- | --- | --- | --- |
-| $\tfrac{1}{2}$ | $\sqrt{1+x}$ | $1 + \frac{x}{2}$ | $1 + \frac{x}{2} - \frac{x^2}{8}$ |
-| $-1$ | $\frac{1}{1+x}$ | $1 - x$ | $1 - x + x^2$ |
-| $-\tfrac{1}{2}$ | $\frac{1}{\sqrt{1+x}}$ | $1 - \frac{x}{2}$ | $1 - \frac{x}{2} + \frac{3x^2}{8}$ |
+<h2 id="combining-approximations" className="scroll-mt-24">3. Combining approximations</h2>
 
-## See it
-
-<Explorer />
-
-## Check it against a calculator
-
-<ComparisonTable />
-
-## Combining approximations
-
-The one move that covers most problems: **substitute, then truncate.**
-
-Approximate the inside, substitute it into the known approximation of the outside, multiply out, and throw away every power above the order you want ($x^2$ and up for linear, $x^3$ and up for quadratic).
+Rather than differentiating a complicated function twice, build its approximation out of the entries above. The one move that covers most cases: **substitute, then truncate.**
 
 | operation | rule |
 | --- | --- |
@@ -100,68 +119,23 @@ Approximate the inside, substitute it into the known approximation of the outsid
 | $f \cdot g$ | multiply the approximations, then truncate |
 | $f \circ g$, where $g(0) = 0$ | substitute $g$'s approximation into $f$'s, then truncate |
 
+**Truncate** means: discard every power above the order you are working to — $x^2$ and up for linear, $x^3$ and up for quadratic.
+
 For composition there is also the direct form, which is just the chain rule:
 
 $$
 f(g(x)) \approx f(g(0)) + f'(g(0))\,g'(0)\,x
 $$
 
-The $g(0)=0$ condition matters. The table entries above are all expansions around $0$, so the inside function has to actually land near $0$ for the substitution to be legal.
+Two conditions worth keeping in mind:
 
-### Why the product rule survives truncation
+- **The inside function must land near 0.** Every entry above is an expansion around $0$, so substitution is only legal when $g(0) = 0$.
+- **Truncating is not optional.** The product of two linear approximations contains an $x^2$ term that is not trustworthy — the inputs were only accurate to first order, so the second-order information in the product is noise.
 
-Multiplying two linear approximations produces an $x^2$ term that you then discard:
+That second point is worth seeing. Multiplying two linear approximations gives
 
 $$
 \big(f(0) + f'(0)x\big)\big(g(0) + g'(0)x\big) = f(0)g(0) + \big[f'(0)g(0) + f(0)g'(0)\big]x + f'(0)g'(0)x^2
 $$
 
-Drop the $x^2$ and the $x$ coefficient is $f'(0)g(0) + f(0)g'(0)$ — exactly $(fg)'(0)$ from the product rule. The shortcut agrees with the definition.
-
-### Worked: linear approximation of $\frac{e^{-3x}}{\sqrt{1+x}}$
-
-$$
-\begin{aligned}
-e^{-3x} &\approx 1 - 3x &&\text{(}a^x\text{ row with }\ln a = -3\text{)} \\
-(1+x)^{-1/2} &\approx 1 - \tfrac{x}{2} &&\text{(}(1+x)^r\text{ row with }r=-\tfrac{1}{2}\text{)} \\
-f(x) &\approx (1 - 3x)\left(1 - \tfrac{x}{2}\right) \\
-&\approx 1 - \tfrac{x}{2} - 3x + \tfrac{3x^2}{2} \\
-&\approx 1 - \tfrac{7x}{2} &&\text{(dropped }x^2\text{)}
-\end{aligned}
-$$
-
-Differentiating the quotient directly gives $f'(0) = -\tfrac{7}{2}$ too, with considerably more work.
-
-### Worked: quadratic approximation of $e^{x+x^2}$
-
-Substitute $u = x + x^2$ into $e^u \approx 1 + u + \tfrac{u^2}{2}$:
-
-$$
-\begin{aligned}
-e^{x+x^2} &\approx 1 + (x + x^2) + \frac{(x+x^2)^2}{2} \\
-&\approx 1 + x + x^2 + \frac{x^2 + 2x^3 + x^4}{2} \\
-&\approx 1 + x + x^2 + \frac{x^2}{2} &&\text{(dropped }x^3, x^4\text{)} \\
-&\approx 1 + x + \frac{3}{2}x^2
-\end{aligned}
-$$
-
-The direct route needs the product and chain rules to reach $f''(0) = 3$, then $\tfrac{3}{2}x^2$. Same answer.
-
-## Error behaviour
-
-| approximation | error scales like |
-| --- | --- |
-| linear | $x^2$ |
-| quadratic | $x^3$ |
-
-Cut $x$ by $10\times$ and the linear error falls roughly $100\times$, the quadratic roughly $1000\times$. This is why these are only worth anything *near* the expansion point — and why the zoom slider above collapses all three curves onto each other.
-
-## Moving away from zero
-
-Every table entry is centred at $0$. To expand around some other point $x_0$, substitute and use the same tables:
-
-$$
-f(x) \approx f(x_0) + f'(x_0)(x - x_0) + \frac{f''(x_0)}{2}(x - x_0)^2
-$$
-
-In practice it is usually easier to rewrite the function so the expansion sits at $0$ again — this is exactly why the table lists $\ln(1+x)$ rather than $\ln x$, since $\ln x$ has no expansion at $0$ but $\ln(1+x)$ does.
+Drop the $x^2$ and the coefficient of $x$ is $f'(0)g(0) + f(0)g'(0)$ — exactly $(fg)'(0)$ from the product rule. The shortcut agrees with the definition, which is why it is safe.

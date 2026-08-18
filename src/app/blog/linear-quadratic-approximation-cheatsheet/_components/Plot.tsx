@@ -1,19 +1,12 @@
 'use client'
 
-import { type ApproxFunction } from './functions'
-
 const WIDTH = 640
-const HEIGHT = 360
-const PADDING = 8
-
-interface Curve {
-  d: string
-  className: string
-}
+const HEIGHT = 340
+const PADDING = 10
 
 /**
- * Samples f across the window, splitting the path wherever the curve leaves the
- * visible band or crosses a pole, so asymptotes don't draw as vertical streaks.
+ * Samples f across the window, breaking the path wherever the curve leaves the
+ * visible band or steps over a pole, so asymptotes don't draw as vertical bars.
  */
 function buildPath(
   f: (x: number) => number,
@@ -32,25 +25,22 @@ function buildPath(
     HEIGHT - PADDING - ((y - yMin) / (yMax - yMin)) * (HEIGHT - 2 * PADDING)
 
   let flush = () => {
-    if (current.length > 1) {
-      segments.push(current.join(' '))
-    }
+    if (current.length > 1) segments.push(current.join(' '))
     current = []
   }
 
-  let previousX: number | null = null
+  let previous: number | null = null
 
   for (let i = 0; i <= steps; i++) {
     let x = -window + (2 * window * i) / steps
 
-    // Break the path when we step over a pole.
     if (
-      previousX !== null &&
-      poles.some((p) => (previousX! < p && x >= p) || (previousX! > p && x <= p))
+      previous !== null &&
+      poles.some((p) => (previous! < p && x >= p) || (previous! > p && x <= p))
     ) {
       flush()
     }
-    previousX = x
+    previous = x
 
     let y = f(x)
 
@@ -59,82 +49,77 @@ function buildPath(
       continue
     }
 
-    let command = current.length === 0 ? 'M' : 'L'
-    current.push(`${command}${toSvgX(x).toFixed(2)} ${toSvgY(y).toFixed(2)}`)
+    current.push(
+      `${current.length === 0 ? 'M' : 'L'}${toSvgX(x).toFixed(2)} ${toSvgY(y).toFixed(2)}`,
+    )
   }
 
   flush()
-
   return segments.join(' ')
 }
 
 export function Plot({
-  fn,
+  exact,
+  linear,
+  quadratic,
   window: windowSize,
-  at,
   showLinear,
   showQuadratic,
+  poles = [],
+  label,
+  at,
 }: {
-  fn: ApproxFunction
+  exact: (x: number) => number
+  linear?: (x: number) => number
+  quadratic?: (x: number) => number
   window: number
-  at: number
   showLinear: boolean
   showQuadratic: boolean
+  poles?: number[]
+  label: string
+  at?: number
 }) {
-  // Scale the vertical band to whatever the exact curve does nearby, with a
-  // floor so flat functions (cos near 0) don't get an absurd zoom.
+  // Scale the vertical band to what the exact curve does nearby, with a floor so
+  // flat functions don't get an absurd zoom.
   let samples: number[] = []
   for (let i = 0; i <= 200; i++) {
     let x = -windowSize + (2 * windowSize * i) / 200
-    let y = fn.exact(x)
-    if (Number.isFinite(y) && Math.abs(y) < 50) {
-      samples.push(y)
-    }
+    let y = exact(x)
+    if (Number.isFinite(y) && Math.abs(y) < 50) samples.push(y)
   }
 
   let dataMin = samples.length ? Math.min(...samples) : -1
   let dataMax = samples.length ? Math.max(...samples) : 1
   let mid = (dataMin + dataMax) / 2
   let half = Math.max((dataMax - dataMin) / 2, windowSize * 0.6, 0.35)
-  let yMin = mid - half * 1.25
-  let yMax = mid + half * 1.25
+  let yMin = mid - half * 1.3
+  let yMax = mid + half * 1.3
 
   let toSvgX = (x: number) =>
     PADDING + ((x + windowSize) / (2 * windowSize)) * (WIDTH - 2 * PADDING)
   let toSvgY = (y: number) =>
     HEIGHT - PADDING - ((y - yMin) / (yMax - yMin)) * (HEIGHT - 2 * PADDING)
 
-  let poles = fn.poles ?? []
-
-  let curves: Curve[] = [
+  let curves: { d: string; className: string }[] = [
     {
-      d: buildPath(fn.exact, windowSize, yMin, yMax, poles),
-      className: 'stroke-zinc-800 dark:stroke-zinc-100',
+      d: buildPath(exact, windowSize, yMin, yMax, poles),
+      className: 'stroke-zinc-400 dark:stroke-zinc-300',
     },
   ]
 
-  if (showQuadratic) {
+  if (showQuadratic && quadratic) {
     curves.push({
-      d: buildPath(fn.quadratic, windowSize, yMin, yMax, []),
+      d: buildPath(quadratic, windowSize, yMin, yMax, []),
       className: 'stroke-sky-500',
     })
   }
 
-  if (showLinear) {
+  if (showLinear && linear) {
     curves.push({
-      d: buildPath(fn.linear, windowSize, yMin, yMax, []),
+      d: buildPath(linear, windowSize, yMin, yMax, []),
       className: 'stroke-teal-500',
     })
   }
-
-  let exactAt = fn.exact(at)
-  let markers = [
-    { y: exactAt, className: 'fill-zinc-800 dark:fill-zinc-100' },
-    showQuadratic
-      ? { y: fn.quadratic(at), className: 'fill-sky-500' }
-      : null,
-    showLinear ? { y: fn.linear(at), className: 'fill-teal-500' } : null,
-  ].filter(Boolean) as { y: number; className: string }[]
 
   let axisY = yMin <= 0 && yMax >= 0 ? toSvgY(0) : null
 
@@ -143,7 +128,7 @@ export function Plot({
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       className="h-auto w-full"
       role="img"
-      aria-label={`Graph of ${fn.label} with its linear and quadratic approximations near zero`}
+      aria-label={`Graph of ${label} with its approximations near zero`}
     >
       {axisY !== null && (
         <line
@@ -151,7 +136,7 @@ export function Plot({
           x2={WIDTH - PADDING}
           y1={axisY}
           y2={axisY}
-          className="stroke-zinc-200 dark:stroke-zinc-700"
+          className="stroke-zinc-300 dark:stroke-zinc-700"
           strokeWidth="1"
         />
       )}
@@ -160,20 +145,21 @@ export function Plot({
         x2={toSvgX(0)}
         y1={PADDING}
         y2={HEIGHT - PADDING}
-        className="stroke-zinc-200 dark:stroke-zinc-700"
+        className="stroke-zinc-300 dark:stroke-zinc-700"
         strokeWidth="1"
       />
 
-      {/* Where we're evaluating. */}
-      <line
-        x1={toSvgX(at)}
-        x2={toSvgX(at)}
-        y1={PADDING}
-        y2={HEIGHT - PADDING}
-        className="stroke-zinc-300 dark:stroke-zinc-600"
-        strokeWidth="1"
-        strokeDasharray="4 4"
-      />
+      {at !== undefined && (
+        <line
+          x1={toSvgX(at)}
+          x2={toSvgX(at)}
+          y1={PADDING}
+          y2={HEIGHT - PADDING}
+          className="stroke-zinc-300 dark:stroke-zinc-600"
+          strokeWidth="1"
+          strokeDasharray="4 4"
+        />
+      )}
 
       {curves.map((curve, index) => (
         <path
@@ -186,20 +172,6 @@ export function Plot({
           className={curve.className}
         />
       ))}
-
-      {markers.map((marker, index) =>
-        Number.isFinite(marker.y) &&
-        marker.y >= yMin &&
-        marker.y <= yMax ? (
-          <circle
-            key={index}
-            cx={toSvgX(at)}
-            cy={toSvgY(marker.y)}
-            r="4"
-            className={marker.className}
-          />
-        ) : null,
-      )}
     </svg>
   )
 }
