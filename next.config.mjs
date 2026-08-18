@@ -10,6 +10,17 @@ const nextConfig = {
   outputFileTracingIncludes: {
     '/blog/*': ['./src/app/blog/**/*.mdx'],
   },
+  async redirects() {
+    return [
+      {
+        // The post dropped its quadratic half and was renamed; the old path
+        // was already live, so keep it pointing somewhere.
+        source: '/blog/linear-quadratic-approximation-cheatsheet',
+        destination: '/blog/linear-approximation-cheatsheet',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 const withMDX = nextMDX({

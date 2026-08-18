@@ -16,7 +16,10 @@ export function Math({
   let html = katex.renderToString(children, {
     displayMode: display,
     throwOnError: false,
-    output: 'html',
+    // Emit MathML alongside the visual HTML. It's real semantic <math>
+    // markup in the server-rendered output, so search crawlers and screen
+    // readers can parse the formula without running any JavaScript.
+    output: 'htmlAndMathml',
   })
 
   return (

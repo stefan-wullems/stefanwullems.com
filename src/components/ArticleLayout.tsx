@@ -25,12 +25,69 @@ function ArrowLeftIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 export function ArticleLayout({
   article,
   children,
+  sidebar,
+  stickySidebar,
 }: {
   article: PostWithSlug
   children: React.ReactNode
+  /** Rendered above the article on narrow screens. */
+  sidebar?: React.ReactNode
+  /** Rendered in a sticky left column from xl up. Usually the same node. */
+  stickySidebar?: React.ReactNode
 }) {
   let router = useRouter()
   let { previousPathname } = useContext(AppContext)
+
+  let body = (
+    <article>
+      <header className="flex flex-col">
+        <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
+          {article.title}
+        </h1>
+        <time
+          dateTime={article.date}
+          className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
+        >
+          <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
+          <span className="ml-3">{formatDate(article.date)}</span>
+        </time>
+      </header>
+      <Prose
+        className="mt-8 prose-table:w-full prose-table:max-w-none"
+        data-mdx-content
+      >
+        {children}
+      </Prose>
+    </article>
+  )
+
+  // With a sidebar the back button can't hang in the left gutter — that space
+  // now belongs to the nav — so it sits inline above the title instead.
+  if (sidebar) {
+    return (
+      <Container className="mt-16 lg:mt-32">
+        <div className="xl:grid xl:grid-cols-[15rem_minmax(0,42rem)] xl:justify-center xl:gap-12">
+          <aside className="hidden xl:block">
+            <div className="sticky top-24">{stickySidebar ?? sidebar}</div>
+          </aside>
+          <div className="mx-auto max-w-2xl xl:mx-0 xl:max-w-none">
+            {previousPathname && (
+              <button
+                type="button"
+                onClick={() => router.back()}
+                aria-label="Go back to blog"
+                className="group mb-8 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md ring-1 shadow-zinc-800/5 ring-zinc-900/5 transition dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 dark:ring-white/10 dark:hover:border-zinc-700 dark:hover:ring-white/20"
+              >
+                <ArrowLeftIcon className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400" />
+              </button>
+            )}
+            <div className="xl:hidden">{sidebar}</div>
+            {body}
+          </div>
+        </div>
+      </Container>
+    )
+  }
 
   return (
     <Container className="mt-16 lg:mt-32">
@@ -46,26 +103,7 @@ export function ArticleLayout({
               <ArrowLeftIcon className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400" />
             </button>
           )}
-          <article>
-            <header className="flex flex-col">
-              <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
-                {article.title}
-              </h1>
-              <time
-                dateTime={article.date}
-                className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
-              >
-                <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
-                <span className="ml-3">{formatDate(article.date)}</span>
-              </time>
-            </header>
-            <Prose
-              className="mt-8 prose-table:w-full prose-table:max-w-none"
-              data-mdx-content
-            >
-              {children}
-            </Prose>
-          </article>
+          {body}
         </div>
       </div>
     </Container>

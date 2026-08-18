@@ -1,0 +1,84 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import { TableOfContents } from './_components/TableOfContents'
+import { TangentFigure } from './_components/TangentFigure'
+import { FunctionCard } from './_components/FunctionCard'
+
+export const article = {
+    author: 'Stefan Wullems',
+    tags: ['math', 'calculus'],
+    date: '2026-08-18',
+    title: 'Linear Approximation Cheatsheet',
+    description: 'What linear approximation does, a list of the common functions near zero with numbers and graphs, and the rules for putting approximations together.',
+}
+
+export const metadata = {
+    title: article.title,
+    description: article.description,
+}
+
+export default (props) => (
+    <ArticleLayout
+        article={article}
+        sidebar={<TableOfContents />}
+        stickySidebar={<TableOfContents sticky />}
+        {...props}
+    />
+)
+
+<h2 id="definition" className="scroll-mt-24">1. Definition</h2>
+
+When $x$ is close to some reference value $x_0$ (in other words $\Delta x \approx 0$), you can approximate $f(x)$ as the tangent line at that reference value.
+
+<TangentFigure />
+
+| form | formula | analog |
+| --- | --- | --- |
+| point–slope form | $f(x) \approx f(x_0) + f'(x_0)(x - x_0)$ | $y - y_0 = m(x - x_0)$ |
+| slope–intercept form | $f(x + \Delta x) \approx f'(x)\,\Delta x + f(x)$ | $y = mx + b$ |
+
+<h2 id="cheatsheet" className="scroll-mt-24">2. Cheatsheet</h2>
+
+Each entry gives you $f$ and $f'$, then lets you pick the reference point. The formula, the table and the graph all follow that choice. Pick **any $x_0$** to see the general form and drag the reference around.
+
+<h3 id="trigonometric" className="scroll-mt-24">2.1 Trigonometric</h3>
+
+<FunctionCard fn="sin" />
+<FunctionCard fn="cos" />
+<FunctionCard fn="tan" />
+<FunctionCard fn="sec" />
+<FunctionCard fn="cot" />
+<FunctionCard fn="csc" />
+
+<h3 id="exponents-and-logarithms" className="scroll-mt-24">2.2 Exponents and logarithms</h3>
+
+<FunctionCard fn="exp" />
+<FunctionCard fn="ln" />
+<FunctionCard fn="pow" />
+<FunctionCard fn="apow" />
+
+<h2 id="algebra" className="scroll-mt-24">3. Algebra</h2>
+
+You do not have to differentiate a messy function at all. You can build its approximation out of the entries above instead.
+
+Write $L(f)$ for the linear approximation of $f$ near $0$.
+
+The useful fact is that you can approximate first and combine second. For a product:
+
+$$
+L\big(L(f)\,L(g)\big) = L(fg)
+$$
+
+So the $L$ of a product is just the linear approximation of the product of the linear approximations. You never have to touch $fg$ itself.
+
+Here is the full set:
+
+| | rule |
+| --- | --- |
+| sum | $L(f+g) = L(f) + L(g)$ |
+| scale | $L(kf) = k\,L(f)$ |
+| product | $L\big(L(f)\,L(g)\big) = L(fg)$ |
+| composition, when $g(0)=0$ | $L\big(L(f)\circ L(g)\big) = L(f\circ g)$ |
+
+Applied to a polynomial, $L$ does nothing but chop off the high powers. So the outer $L$ on each left-hand side *is* the cut — the $x^2$ term a product or composition produces along the way is not trustworthy, since the inputs were only accurate to first order.
+
+The $g(0) = 0$ condition on the last line is not a deep restriction — it falls out of how $L$ is defined here. $L(f)$ only carries information about $f$ near $0$, so plugging in $g(x)$ is only valid where $g$ actually lands near $0$. Centre $L$ at a different reference point and the condition moves with it: substitution is valid whenever the inside function's value at your reference point equals the outside function's reference point.
