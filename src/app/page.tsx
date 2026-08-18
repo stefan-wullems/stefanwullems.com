@@ -38,7 +38,7 @@ export default function Home() {
           className="animate-hero-fade pointer-events-auto flex gap-7 font-mono text-xs tracking-[0.2em] lowercase [animation-delay:2.8s] sm:gap-9"
         >
           <QuietLink href="/about">about</QuietLink>
-          <QuietLink href="/sops">sops</QuietLink>
+          <QuietLink href="/blog">blog</QuietLink>
           <QuietLink href="https://github.com/stefan-wullems">github</QuietLink>
           <QuietLink href="https://www.linkedin.com/in/stefan-wullems-572854242/">
             linkedin

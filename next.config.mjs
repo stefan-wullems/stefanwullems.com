@@ -6,7 +6,7 @@ import remarkGfm from 'remark-gfm'
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
   outputFileTracingIncludes: {
-    '/sops/*': ['./src/app/sops/**/*.mdx'],
+    '/blog/*': ['./src/app/blog/**/*.mdx'],
   },
 }
 

@@ -30,7 +30,7 @@ export function Footer() {
             <div className="flex flex-col items-center justify-between gap-6 font-mono text-xs tracking-[0.15em] text-zinc-500 lowercase md:flex-row">
               <div className="flex flex-wrap justify-center gap-x-7 gap-y-1">
                 <NavLink href="/about">about</NavLink>
-                <NavLink href="/sops">sops</NavLink>
+                <NavLink href="/blog">blog</NavLink>
                 <NavLink href="https://github.com/stefan-wullems">
                   github
                 </NavLink>

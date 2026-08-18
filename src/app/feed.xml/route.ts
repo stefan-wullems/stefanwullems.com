@@ -10,13 +10,13 @@ export async function GET(req: Request) {
   }
 
   let author = {
-    name: 'Spencer Sharp',
-    email: 'spencer@planetaria.tech',
+    name: 'Stefan Wullems',
   }
 
   let feed = new Feed({
     title: author.name,
-    description: 'Your blog description',
+    description:
+      'Writing on SEO, content analysis, and building things on the web.',
     author,
     id: siteUrl,
     link: siteUrl,
@@ -29,17 +29,17 @@ export async function GET(req: Request) {
   })
 
   let sopIds = require
-    .context('../sops', true, /\/page\.mdx$/)
+    .context('../blog', true, /\/page\.mdx$/)
     .keys()
     .filter((key) => key.startsWith('./'))
     .map((key) => key.slice(2).replace(/\/page\.mdx$/, ''))
 
   for (let id of sopIds) {
-    let url = String(new URL(`/sops/${id}`, req.url))
+    let url = String(new URL(`/blog/${id}`, req.url))
     let html = await (await fetch(url)).text()
     let $ = cheerio.load(html)
 
-    let publicUrl = `${siteUrl}/sops/${id}`
+    let publicUrl = `${siteUrl}/blog/${id}`
     let article = $('article').first()
     let title = article.find('h1').first().text()
     let date = article.find('time').first().attr('datetime')
