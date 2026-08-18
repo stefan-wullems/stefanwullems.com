@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 
+import 'katex/dist/katex.min.css'
 import '@/styles/tailwind.css'
 
 const fraunces = Fraunces({
