@@ -1,0 +1,92 @@
+import { ArticleLayout } from '@/components/ArticleLayout'
+import { TableOfContents } from './_components/TableOfContents'
+import { QuadraticFigure } from './_components/QuadraticFigure'
+import { FunctionCard } from './_components/FunctionCard'
+
+export const article = {
+    author: 'Stefan Wullems',
+    tags: ['math', 'calculus'],
+    date: '2026-08-18',
+    title: 'Quadratic Approximation Cheatsheet',
+    description: 'What quadratic approximation does, a list of the common functions with numbers and graphs, and how much it improves on the linear one.',
+}
+
+export const metadata = {
+    title: article.title,
+    description: article.description,
+}
+
+export default (props) => (
+    <ArticleLayout
+        article={article}
+        sidebar={<TableOfContents />}
+        stickySidebar={<TableOfContents sticky />}
+        {...props}
+    />
+)
+
+<h2 id="definition" className="scroll-mt-24">1. Definition</h2>
+
+When $x$ is close to some reference value $x_0$ (in other words $\Delta x \approx 0$), you can approximate $f(x)$ as the parabola that matches the curve at that reference value.
+
+| form | formula | analog |
+| --- | --- | --- |
+| point–slope form | $f(x) \approx f(x_0) + f'(x_0)(x - x_0) + \frac{f''(x_0)}{2}(x - x_0)^2$ | $y = a + b(x - x_0) + c(x - x_0)^2$ |
+| slope–intercept form | $f(x_0 + \Delta x) \approx f(x_0) + f'(x_0)\,\Delta x + \frac{f''(x_0)}{2}\Delta x^2$ | $y = a + b\,\Delta x + c\,\Delta x^2$ |
+
+A line can only match the height and the slope. It stays straight while the curve bends, so it falls behind the moment you leave the reference point. The $x^2$ term lets your guess bend too, and $f''(x_0)$ says how hard.
+
+The teal line below is the linear approximation from [the linear cheatsheet](/blog/linear-approximation-cheatsheet); the violet curve is the quadratic one. Drag $\Delta x$ out and watch the violet curve stay with the grey one for much longer.
+
+<QuadraticFigure />
+
+Set $f''(x_0) = 0$ and the whole $x^2$ term disappears, leaving exactly the linear approximation. So quadratic approximation is never worse than linear — at worst the curvature is zero and the two agree.
+
+<h2 id="cheatsheet" className="scroll-mt-24">2. Cheatsheet</h2>
+
+Each entry gives you the general formula, then lets you pick the reference point. Every table compares the linear approximation $\tilde f_1$ against the quadratic one $\tilde f_2$, with both errors side by side so you can see how much the extra term buys you.
+
+Watch the error columns as $\Delta x$ shrinks. The linear error falls like $\Delta x^2$; the quadratic error falls like $\Delta x^3$. At $\Delta x = 1/100$ that is already a difference of roughly a hundredfold.
+
+<h3 id="trigonometric" className="scroll-mt-24">2.1 Trigonometric</h3>
+
+<FunctionCard fn="sin" />
+<FunctionCard fn="cos" />
+<FunctionCard fn="tan" />
+<FunctionCard fn="sec" />
+<FunctionCard fn="cot" />
+<FunctionCard fn="csc" />
+
+<h3 id="exponents-and-logarithms" className="scroll-mt-24">2.2 Exponents and logarithms</h3>
+
+<FunctionCard fn="exp" />
+<FunctionCard fn="ln" />
+<FunctionCard fn="pow" />
+<FunctionCard fn="apow" />
+
+<h2 id="algebra" className="scroll-mt-24">3. Algebra</h2>
+
+You do not have to differentiate a messy function twice. You can build its approximation out of the entries above instead.
+
+Write $Q(f)$ for the quadratic approximation of $f$ near $0$, and $L(f)$ for the linear one.
+
+The useful fact is that you can approximate first and combine second. For a product:
+
+$$
+Q\big(Q(f)\,Q(g)\big) = Q(fg)
+$$
+
+So the $Q$ of a product is just the quadratic approximation of the product of the quadratic approximations. You never have to touch $fg$ itself.
+
+Here is the full set:
+
+| | rule |
+| --- | --- |
+| sum | $Q(f+g) = Q(f) + Q(g)$ |
+| scale | $Q(kf) = k\,Q(f)$ |
+| product | $Q\big(Q(f)\,Q(g)\big) = Q(fg)$ |
+| composition, when $g(0)=0$ | $Q\big(Q(f)\circ Q(g)\big) = Q(f\circ g)$ |
+
+Applied to a polynomial, $Q$ does nothing but chop off everything above $x^2$. So the outer $Q$ on each left-hand side *is* the cut — a product of two quadratics runs up to $x^4$, and those high terms are not trustworthy, since the inputs were only accurate to second order.
+
+The $g(0) = 0$ condition on the last line is not a deep restriction — it falls out of how $Q$ is defined here. $Q(f)$ only carries information about $f$ near $0$, so plugging in $g(x)$ is only valid where $g$ actually lands near $0$. Centre $Q$ at a different reference point and the condition moves with it: substitution is valid whenever the inside function's value at your reference point equals the outside function's reference point.
