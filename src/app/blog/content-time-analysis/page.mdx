@@ -1,4 +1,5 @@
 import { SOPLayout } from '@/components/SOPLayout'
+import { articleMetadata } from '@/lib/articleMetadata'
 import { ContentTimeAnalysisSOPProvider } from './_components/context'
 import {
     UploadAhrefsPageData,
@@ -15,10 +16,7 @@ export const article = {
     description: 'Discover how your content performs relative to its publication date with temporal performance analysis. Generate time-based insights that reveal performance trends and identify improving or declining content over time.',
 }
 
-export const metadata = {
-    title: article.title,
-    description: article.description,
-}
+export const metadata = articleMetadata(article, 'content-time-analysis')
 
 export default (props) => (
     <ContentTimeAnalysisSOPProvider>

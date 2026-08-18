@@ -47,6 +47,7 @@ export function Header() {
           <nav>
             <ul className="flex gap-7 font-mono text-xs tracking-[0.2em] lowercase">
               <NavItem href="/about">about</NavItem>
+              <NavItem href="/projects">projects</NavItem>
               <NavItem href="/blog">blog</NavItem>
             </ul>
           </nav>

@@ -1,13 +1,14 @@
 'use client'
 
 import { useContext } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { AppContext } from '@/app/providers'
 import { Container } from '@/components/Container'
 import { Prose } from '@/components/Prose'
 import { type PostWithSlug } from '@/lib/blog'
 import { formatDate } from '@/lib/formatDate'
+import { siteConfig } from '@/lib/siteConfig'
 
 function ArrowLeftIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -36,10 +37,34 @@ export function ArticleLayout({
   stickySidebar?: React.ReactNode
 }) {
   let router = useRouter()
+  let pathname = usePathname()
   let { previousPathname } = useContext(AppContext)
+
+  // The frontmatter object has no slug — that is added by getAllPosts when
+  // building the index — so take the canonical URL from the route itself.
+  let url = `${siteConfig.url}${pathname}`
+
+  let jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: article.title,
+    description: article.description,
+    datePublished: article.date,
+    dateModified: article.date,
+    keywords: article.tags?.join(', '),
+    url,
+    mainEntityOfPage: url,
+    image: `${siteConfig.url}/opengraph-image.png`,
+    author: { '@type': 'Person', '@id': `${siteConfig.url}/#person` },
+    publisher: { '@id': `${siteConfig.url}/#person` },
+  }
 
   let body = (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="flex flex-col">
         <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
           {article.title}

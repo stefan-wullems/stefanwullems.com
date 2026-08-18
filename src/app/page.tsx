@@ -30,14 +30,15 @@ export default function Home() {
         <h1 className="animate-hero-fade font-display text-3xl font-semibold tracking-tight text-zinc-100 [animation-delay:1.8s] sm:text-4xl">
           Stefan Wullems
         </h1>
-        <p className="animate-hero-fade -mt-3 font-mono text-[0.7rem] tracking-[0.45em] text-zinc-500 uppercase [animation-delay:2.2s]">
+        <p className="-mt-3 animate-hero-fade font-mono text-[0.7rem] tracking-[0.45em] text-zinc-500 uppercase [animation-delay:2.2s]">
           web developer&ensp;·&ensp;ai automation
         </p>
         <nav
           aria-label="Main"
-          className="animate-hero-fade pointer-events-auto flex gap-7 font-mono text-xs tracking-[0.2em] lowercase [animation-delay:2.8s] sm:gap-9"
+          className="pointer-events-auto flex animate-hero-fade gap-7 font-mono text-xs tracking-[0.2em] lowercase [animation-delay:2.8s] sm:gap-9"
         >
           <QuietLink href="/about">about</QuietLink>
+          <QuietLink href="/projects">projects</QuietLink>
           <QuietLink href="/blog">blog</QuietLink>
           <QuietLink href="https://github.com/stefan-wullems">github</QuietLink>
           <QuietLink href="https://www.linkedin.com/in/stefan-wullems-572854242/">

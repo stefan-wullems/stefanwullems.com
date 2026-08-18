@@ -1,4 +1,5 @@
 import { SOPLayout } from '@/components/SOPLayout'
+import { articleMetadata } from '@/lib/articleMetadata'
 import { ContentInventorySOPProvider } from './_components/context'
 import {
     UploadAhrefsPageData,
@@ -14,10 +15,7 @@ export const article = {
     description: 'Generate comprehensive content inventory with content scores and performance insights. Identify your star performers, optimization candidates, and priority improvement pages using multi-dimensional analysis.',
 }
 
-export const metadata = {
-    title: article.title,
-    description: article.description,
-}
+export const metadata = articleMetadata(article, 'content-inventory')
 
 export default (props) => (
     <ContentInventorySOPProvider>

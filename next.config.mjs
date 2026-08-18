@@ -10,6 +10,16 @@ const nextConfig = {
   outputFileTracingIncludes: {
     '/blog/*': ['./src/app/blog/**/*.mdx'],
   },
+  images: {
+    // OpenGraph previews for the projects page. Served straight from the
+    // source sites rather than re-hosted, so they stay in sync.
+    remotePatterns: [
+      { protocol: 'https', hostname: 'typehyped.com' },
+      { protocol: 'https', hostname: 'www.typehyped.com' },
+      { protocol: 'https', hostname: 'typemaster.io' },
+      { protocol: 'https', hostname: 'www.typemaster.io' },
+    ],
+  },
   async redirects() {
     return [
       {
