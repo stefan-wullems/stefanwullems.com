@@ -64,7 +64,7 @@ export default function About() {
         </div>
         <div className="lg:order-first lg:row-span-2">
           <h1 className="font-display text-4xl font-semibold tracking-tight text-zinc-100 sm:text-5xl">
-            I’m Stefan. I build things, usually the long way around.
+            Hi, I’m Stefan.
           </h1>
           <div className="mt-6 space-y-7 text-base text-zinc-400">
             <p>
